@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,4 +26,11 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(
+            mappedBy = "user", // "user" este numele câmpului din TransactionEntity
+            cascade = CascadeType.ALL, // Șterge/salvează tranzacțiile odată cu user-ul
+            orphanRemoval = true // Șterge tranzacțiile care nu mai sunt legate de user
+    )
+    private List<TransactionEntity> transactions = new ArrayList<>();
 }

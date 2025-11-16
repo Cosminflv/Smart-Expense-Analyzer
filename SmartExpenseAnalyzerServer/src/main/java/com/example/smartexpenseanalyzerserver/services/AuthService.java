@@ -49,6 +49,6 @@ public class AuthService {
 
         // --- Success: Return a response ---
         // In a real app, you would generate a JWT token here
-        return new AuthResponse("User logged in successfully.", user.getUsername());
+        return new AuthResponse("User logged in successfully.", user.getUsername(), user.getId());
     }
 }

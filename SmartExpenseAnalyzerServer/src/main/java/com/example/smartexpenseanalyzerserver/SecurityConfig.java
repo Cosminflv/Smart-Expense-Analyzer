@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll() // Allow access to all auth endpoints
-                        .requestMatchers("/h2-console/**").permitAll() // Allow access to H2 console
+                        .requestMatchers("/api/users/**").permitAll()
                         .anyRequest().authenticated() // All other requests must be authenticated
                 )
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // For H2 console
