@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping(
             path = "/{userId}/transactions/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE // <-- ACEASTA ESTE LINIA CHEIE
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public ResponseEntity<String> uploadTransactions(
             @PathVariable Long userId,
@@ -38,13 +38,11 @@ public class UserController {
         }
 
         try (InputStream inputStream = file.getInputStream()) {
-            // Apelăm serviciul de import pe care l-am definit anterior
             transactionImportService.importTransactions(inputStream, userId);
-            return ResponseEntity.ok("Tranzacțiile au fost importate cu succes.");
+            return ResponseEntity.ok("Tranzactiile au fost importate cu succes.");
         } catch (Exception e) {
-            // Prindem orice eroare (ex: User not found, eroare de parsare CSV)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Eroare la procesarea fișierului: " + e.getMessage());
+                    .body("Eroare la procesarea fisierului: " + e.getMessage());
         }
     }
 
