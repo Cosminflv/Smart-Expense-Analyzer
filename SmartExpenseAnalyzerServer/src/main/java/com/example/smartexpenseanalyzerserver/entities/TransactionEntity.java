@@ -33,8 +33,12 @@ public class TransactionEntity {
     @Column(nullable = false)
     private BigDecimal currentBalance; // Sold Curent
 
+    @Enumerated(EnumType.STRING)
+    private TransactionCategory category; // ex: SUPERMARKET, UTILITIES
+
     // Relația Many-to-One: Mai multe tranzacții aparțin unui singur utilizator
     @ManyToOne(fetch = FetchType.LAZY) // LAZY = nu încărca utilizatorul până nu e nevoie
     @JoinColumn(name = "user_id", nullable = false) // Cheia externă în tabelul 'transactions'
     private UserEntity user;
 }
+

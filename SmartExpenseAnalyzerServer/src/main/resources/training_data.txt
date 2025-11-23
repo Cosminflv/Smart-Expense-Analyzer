@@ -1,0 +1,91 @@
+INCOME Incasare Salariu Firma SRL
+INCOME Incasare PFA Factura
+INCOME Restituire Taxe
+INCOME Vanzare OLX
+INCOME Transfer de la Popescu Ion
+INCOME Incasare Dobanda Depozit
+INCOME Alimentare Cont
+TRANSPORT Plata POS OMV PETROM Braila
+TRANSPORT Plata POS OMV PETROM Valea Mare (Babeni)
+TRANSPORT Plata POS OMV PETROM Oltenita
+TRANSPORT Plata POS OMV PETROM Sighetu Marmatiei
+TRANSPORT Plata POS OMV PETROM Bailesti
+TRANSPORT Plata POS OMV PETROM Glina
+TRANSPORT Plata POS OMV PETROM Gaesti
+TRANSPORT Plata POS OMV PETROM Bucuresti
+TRANSPORT Plata POS Rompetrol
+TRANSPORT Plata POS MOL Benzinarie
+TRANSPORT Uber Trip
+TRANSPORT Bolt Ride
+UTILITIES Plata POS EON GAZ Baicoi
+UTILITIES Plata POS EON GAZ Vladimirescu
+UTILITIES Plata POS EON GAZ Cugir
+UTILITIES Plata POS EON GAZ Sighisoara
+UTILITIES Plata POS EON GAZ Bocsa
+UTILITIES Plata POS EON GAZ Busteni
+UTILITIES Plata POS EON GAZ Curtea de Arges
+UTILITIES Plata POS EON GAZ Baciu
+UTILITIES Plata POS ENEL Rasnov Romacril
+UTILITIES Plata POS ENEL Slatina
+UTILITIES Plata POS Digi Romania
+UTILITIES Plata POS Electrica Furnizare
+HEALTH Plata POS Farmacia Tei Talmaciu
+HEALTH Plata POS Farmacia Tei Valu lui Traian
+HEALTH Plata POS Farmacia Tei Mangalia
+HEALTH Plata POS Farmacia Tei Matca
+HEALTH Plata POS Farmacia Tei Dragasani
+HEALTH Plata POS Farmacia Tei Braila
+HEALTH Plata POS Farmacia Tei Bucuresti
+HEALTH Plata POS Dr Max
+HEALTH Plata POS Sensiblu
+HEALTH Plata POS Regina Maria
+ENTERTAINMENT Plata POS Netflix Huedin
+ENTERTAINMENT Plata POS Netflix Chisineu-Cris
+ENTERTAINMENT Plata POS Netflix Cumpana
+ENTERTAINMENT Plata POS Netflix Deta
+ENTERTAINMENT Plata POS Spotify Talmaciu
+ENTERTAINMENT Plata POS Spotify Roseti
+ENTERTAINMENT Plata POS Spotify Cugir
+ENTERTAINMENT Plata POS Spotify Resita
+ENTERTAINMENT Plata POS Spotify Bosanci
+ENTERTAINMENT Plata POS Carturesti Fundeni
+ENTERTAINMENT Plata POS Carturesti Giarmata
+ENTERTAINMENT Plata POS Carturesti Valea Mare (Babeni)
+ENTERTAINMENT Plata POS Carturesti Drobeta-Turnu Severin
+ENTERTAINMENT Cinema City
+GROCERIES Plata POS Carrefour Harsova
+GROCERIES Plata POS Carrefour Beius
+GROCERIES Plata POS Carrefour Medgidia
+GROCERIES Plata POS Carrefour Resita
+GROCERIES Plata POS Carrefour Ploiesti
+GROCERIES Plata POS Carrefour Ramnicu Valcea
+GROCERIES Plata POS MEGA IMAGE Floresti
+GROCERIES Plata POS MEGA IMAGE Sannicolau Mare
+GROCERIES Plata POS MEGA IMAGE Rucar
+GROCERIES Plata POS MEGA IMAGE Giarmata
+GROCERIES Plata POS MEGA IMAGE Curtea de Arges
+GROCERIES Plata POS MEGA IMAGE Chisineu-Cris
+GROCERIES Plata POS LIDL Alba Iulia
+GROCERIES Plata POS LIDL Campia Turzii
+GROCERIES Plata POS LIDL Gherla
+GROCERIES Plata POS LIDL Gilau
+GROCERIES Plata POS LIDL Diosig
+GROCERIES Plata POS LIDL Dumbraveni
+GROCERIES Plata POS LIDL Arad
+GROCERIES Plata POS Kaufland
+GROCERIES Plata POS Auchan
+GROCERIES Plata POS Profi
+SHOPPING Plata POS Bolt Food Afumati
+SHOPPING Plata POS Bolt Food Cumpana
+SHOPPING Plata POS Bolt Food Vicovu de Jos
+SHOPPING Plata POS Bolt Food Rodna
+SHOPPING Plata POS Glovo Teius
+SHOPPING Plata POS Glovo Giroc
+SHOPPING Plata POS Glovo Sebis
+SHOPPING Plata POS eMAG
+SHOPPING Plata POS Fashion Days
+SHOPPING Plata POS Dedeman
+SHOPPING Plata POS H&M
+SHOPPING Plata POS Zara
+UNCATEGORIZED Retragere ATM
+UNCATEGORIZED Comision Bancar

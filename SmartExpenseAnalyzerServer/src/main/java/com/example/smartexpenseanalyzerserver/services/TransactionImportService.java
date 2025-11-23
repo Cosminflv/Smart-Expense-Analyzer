@@ -22,11 +22,15 @@ public class TransactionImportService {
 
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
+    private final TransactionEnrichmentService enrichmentService;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public TransactionImportService(UserRepository userRepository, TransactionRepository transactionRepository) {
+    public TransactionImportService(UserRepository userRepository,
+                                    TransactionRepository transactionRepository,
+                                    TransactionEnrichmentService enrichmentService) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
+        this.enrichmentService = enrichmentService;
     }
 
     @Transactional
@@ -59,6 +63,8 @@ public class TransactionImportService {
 
             // 4. Asociază tranzacția cu utilizatorul
             transaction.setUser(user);
+
+            enrichmentService.enrich(transaction);
 
             transactions.add(transaction);
         }
