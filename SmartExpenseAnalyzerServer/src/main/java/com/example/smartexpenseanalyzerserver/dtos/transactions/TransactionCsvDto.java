@@ -10,7 +10,7 @@ public class TransactionCsvDto {
     @CsvBindByName(column = "Data")
     private String data;
 
-    @CsvBindByName(column = "Descriere")
+    @CsvBindByName(column = "Describer")
     private String descriere;
 
     @CsvBindByName(column = "Suma")

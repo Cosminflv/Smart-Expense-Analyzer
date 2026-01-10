@@ -1,5 +1,5 @@
-import React from 'react';
-import './TransactionsList.css';
+import React, { useEffect, useState } from "react";
+import "./TransactionsList.css";
 
 interface TransactionItemProps {
   id: string;
@@ -18,7 +18,6 @@ function TransactionItem({
   return (
     <div className="course-list-item">
       <div className="course-item-left">
-        <img src={iconUrl} alt={title} className="course-item-icon" />
         <div className="course-item-info">
           <span className="course-item-title">{title}</span>
           <span className="course-item-author">{category}</span>
@@ -33,36 +32,23 @@ function TransactionItem({
 }
 
 export function TransactionsList(): React.ReactElement {
-  const transactions: TransactionItemProps[] = [
-    {
-      id: '1',
-      iconUrl: '/icons/food.png',
-      title: 'McDonald’s',
-      category: 'Food',
-      amount: '12.50',
-    },
-    {
-      id: '2',
-      iconUrl: '/icons/bill.png',
-      title: 'Electricity Bill',
-      category: 'Utilities',
-      amount: '45.00',
-    },
-    {
-      id: '3',
-      iconUrl: '/icons/shopping.png',
-      title: 'Zara',
-      category: 'Shopping',
-      amount: '89.99',
-    },
-    {
-      id: '4',
-      iconUrl: '/icons/salary.png',
-      title: 'Salary',
-      category: 'Income',
-      amount: '+2500.00',
-    },
-  ];
+  const [transactions, setTransactions] = useState<TransactionItemProps[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/users/1/transactions/recent")
+      .then((res) => res.json())
+      .then((data) => {
+        setTransactions(
+          data.map((t: any) => ({
+            id: String(t.id),
+            title: t.title,
+            category: t.category,
+            amount: t.amount.toFixed(2),
+          }))
+        );
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <div className="courses-section-container">

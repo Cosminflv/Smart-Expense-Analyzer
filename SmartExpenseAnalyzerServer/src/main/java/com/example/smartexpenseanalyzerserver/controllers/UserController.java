@@ -85,4 +85,14 @@ public class UserController {
         List<CategoryExpenseDTO> stats = userProfileService.getCategoryBreakdown(userId, startDate, endDate);
         return ResponseEntity.ok(stats);
     }
+
+    @GetMapping("/{userId}/transactions/recent")
+    public ResponseEntity<List<Map<String, Object>>> getRecentTransactions(
+            @PathVariable Long userId) {
+
+        return ResponseEntity.ok(
+                userProfileService.getRecentTransactions(userId)
+        );
+    }
+
 }

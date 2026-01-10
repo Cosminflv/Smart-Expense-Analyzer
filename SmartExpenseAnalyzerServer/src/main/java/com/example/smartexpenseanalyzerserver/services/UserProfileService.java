@@ -165,4 +165,17 @@ public class UserProfileService {
                         )
                 ));
     }
+    public List<Map<String, Object>> getRecentTransactions(Long userId) {
+        return transactionRepository
+                .findTop5ByUserIdOrderByTransactionDateDesc(userId)
+                .stream()
+                .map(t -> Map.<String, Object>of(
+                        "id", t.getId(),
+                        "title", t.getDescription(),
+                        "category", t.getCategory().name(),
+                        "amount", t.getAmount()
+                ))
+                .toList();
+    }
+
 }
