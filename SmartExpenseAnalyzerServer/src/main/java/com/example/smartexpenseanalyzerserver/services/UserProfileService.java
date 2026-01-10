@@ -66,9 +66,6 @@ public class UserProfileService {
         // Calculează Economiile
         BigDecimal netSavings = totalIncome.subtract(totalExpenses);
 
-        // Aici poți adăuga logica de categorisire
-        // ...
-
         return Map.of(
                 "totalIncome", totalIncome,
                 "totalExpenses", totalExpenses,

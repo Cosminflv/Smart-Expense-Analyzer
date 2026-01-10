@@ -1,8 +1,9 @@
 package com.example.smartexpenseanalyzerserver.services;
 
-import com.example.smartexpenseanalyzerserver.dtos.login.AuthResponse;
+import com.example.smartexpenseanalyzerserver.dtos.login.AuthRequest;
 import com.example.smartexpenseanalyzerserver.dtos.login.LoginRequest;
 import com.example.smartexpenseanalyzerserver.dtos.login.RegisterRequest;
+import com.example.smartexpenseanalyzerserver.dtos.login.UsersRequest;
 import com.example.smartexpenseanalyzerserver.entities.UserEntity;
 import com.example.smartexpenseanalyzerserver.exceptions.InvalidCredentialsException;
 import com.example.smartexpenseanalyzerserver.exceptions.UserAlreadyExistsException;
@@ -10,6 +11,8 @@ import com.example.smartexpenseanalyzerserver.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -37,7 +40,7 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponse login(LoginRequest loginRequest) {
+    public AuthRequest login(LoginRequest loginRequest) {
         // --- Business Logic: Find user by username ---
         UserEntity user = userRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password."));
@@ -49,6 +52,11 @@ public class AuthService {
 
         // --- Success: Return a response ---
         // In a real app, you would generate a JWT token here
-        return new AuthResponse("User logged in successfully.", user.getUsername(), user.getId());
+        return new AuthRequest("User logged in successfully.", user.getUsername(), user.getId());
+    }
+
+    @Transactional
+    public List<UsersRequest> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> new UsersRequest(user.getId(), user.getUsername())).toList();
     }
 }
