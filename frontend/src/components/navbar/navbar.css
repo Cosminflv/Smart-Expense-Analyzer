@@ -1,0 +1,77 @@
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f0f2f5; 
+}
+
+.vertical-navbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center;
+  
+  width: 75px;
+  height: 95vh;
+  
+  background-color: #181818;
+  color: white;
+  
+  padding: 25px 0; 
+  margin: 2.5vh 10px; 
+  
+  border-radius: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  
+  position: fixed; 
+  left: 0;
+  top: 0;
+}
+
+
+.logo {
+  font-size: 1.75rem; /* Adjust font size as needed */
+  font-weight: 700;
+  cursor: pointer;
+  color: white; /* Make sure it's visible */
+  
+  /* This is the magic: makes text run top-to-bottom */
+  writing-mode: vertical-lr;
+  
+  /* Optional: Adjust spacing between letters */
+  letter-spacing: -3px; 
+}
+
+
+.navbar-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px; 
+}
+
+
+.nav-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+
+.nav-icon {
+  color: #a0a0a0; 
+  font-size: 1.5rem; 
+  text-decoration: none;
+  transition: all 0.2s ease-in-out; 
+}
+
+
+.nav-icon:hover {
+  color: #ffffff; 
+  transform: scale(1.15); 
+}
+
+.nav-icon.active {
+  color: #ffffff;
+  transform: scale(1.15);
+}

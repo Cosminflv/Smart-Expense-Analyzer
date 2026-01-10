@@ -1,0 +1,107 @@
+/* DailyTipCard.css */
+
+.daily-tip-card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  
+  padding: 25px 30px;
+  margin: 20px;
+  
+  max-width: 550px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.tip-text-content {
+  flex-shrink: 1;
+  max-width: 65%; /* Give a bit more space for text */
+}
+
+.tip-heading {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #181818;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.tip-description {
+  font-size: 0.95rem;
+  color: #6a6a6a;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.tip-button {
+  background-color: #181818;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.tip-button:hover {
+  background-color: #333;
+}
+
+.tip-image-container {
+  flex-shrink: 0;
+  margin-left: 30px;
+  
+  /* Create the circular background */
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #f0f2f5; /* Light grey background */
+  
+  /* Center the icon inside */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tip-icon {
+  font-size: 3rem; /* 48px */
+  color: #181818; /* Dark icon color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .daily-tip-card-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    margin: 15px;
+  }
+
+  .tip-text-content {
+    max-width: 100%;
+  }
+
+  .tip-heading {
+    font-size: 1.4rem;
+  }
+
+  .tip-image-container {
+    margin-top: 25px;
+    margin-left: 0;
+    width: 80px;
+    height: 80px;
+  }
+
+  .tip-icon {
+    font-size: 2.5rem;
+  }
+}

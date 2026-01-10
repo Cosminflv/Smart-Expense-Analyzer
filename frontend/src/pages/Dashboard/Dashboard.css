@@ -1,0 +1,37 @@
+.user-page-container {
+  display: grid;
+  grid-template-columns: 80px 1fr 650px; /* navbar / main / right */
+  gap: 20px;
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.user-navbar {
+  height: 100%;
+}
+
+.user-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto; /* scroll dacă conținutul depășește */
+  padding-right: 10px;
+}
+
+.user-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.right-bottom-message {
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  padding: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
+

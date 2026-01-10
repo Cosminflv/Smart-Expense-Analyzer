@@ -1,0 +1,189 @@
+.courses-section-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 30px 20px; /* Adjust margin as needed */
+  background-color: #f8f8f8; /* Light background for the whole section */
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.section-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #181818;
+  margin-bottom: 25px;
+}
+
+.course-filters {
+  display: flex;
+  gap: 15px; /* Space between filter buttons */
+  margin-bottom: 30px;
+}
+
+.filter-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  padding: 5px 0; /* Vertical padding */
+  position: relative; /* For the active indicator */
+  transition: color 0.2s;
+}
+
+.filter-button:hover {
+  color: #333;
+}
+
+.filter-button.active {
+  color: #181818;
+  font-weight: 600;
+}
+
+.filter-button.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px; /* Position below text */
+  width: 100%;
+  height: 3px;
+  background-color: #181818; /* Dark indicator line */
+  border-radius: 2px;
+}
+
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between individual course items */
+}
+
+.course-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* Lighter shadow for list items */
+}
+
+.course-item-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-grow: 1; /* Allows it to take available space */
+}
+
+.course-item-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px; /* Slightly rounded corners */
+  object-fit: contain; /* Ensures the whole icon is visible */
+  background-color: #f0f0f0; /* Light background for icons */
+  padding: 5px; /* Padding inside the icon's background */
+  box-sizing: border-box;
+}
+
+.course-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-item-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #181818;
+  margin-bottom: 3px;
+}
+
+.course-item-author {
+  font-size: 0.85rem;
+  color: #7a7a7a;
+}
+
+.course-item-right {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* Space between meta info and button */
+}
+
+.course-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #7a7a7a;
+  font-size: 0.9rem;
+}
+
+.meta-icon {
+  font-size: 1.1rem;
+}
+
+.meta-text {
+  font-weight: 500;
+}
+
+.view-course-button {
+  background-color: #181818;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0; /* Prevents button from shrinking */
+}
+
+.view-course-button:hover {
+  background-color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .course-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .course-item-right {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 15px; /* Less gap on small screens */
+  }
+
+  .course-item-meta {
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+
+  .view-course-button {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
+
+  .course-filters {
+    flex-wrap: wrap; /* Allow filters to wrap */
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-item-left {
+    width: 100%;
+  }
+
+  .course-item-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

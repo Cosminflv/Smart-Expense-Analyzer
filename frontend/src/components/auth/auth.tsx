@@ -65,7 +65,7 @@ const AuthComponent = () => {
        
         localStorage.setItem("currentUser", JSON.stringify(auth));
         setMessage(`✅ Welcome, ${auth.username}!`);
-        navigate("/user-dashboard");
+        navigate("/dashboard");
       } else {
 
         await apiPost<string>("/api/auth/register", {

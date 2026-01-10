@@ -1,0 +1,184 @@
+/* DashboardHeader.css */
+
+.dashboard-header-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box; /* Ensures padding doesn't add to width */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8f8f8; /* Light background, adjust as needed */
+  border-bottom: 1px solid #eee; /* Optional separator line */
+}
+
+/* 1. Top Row Styles */
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px; /* Space between top row and stats */
+}
+
+.search-bar {
+  position: relative;
+  flex-grow: 1; /* Makes search bar take available space */
+  max-width: 400px; /* Or any width you prefer */
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1.2rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 15px 12px 45px; /* Left padding for icon */
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  outline: none;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: 20px; /* Space from search bar */
+}
+
+.notification-button {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem; /* Makes bell icon larger */
+  color: #333;
+}
+
+.bell-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #e53e3e; /* Red color */
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-arrow {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* 2. Stats Row Styles */
+.header-stats-row {
+  display: flex;
+  gap: 20px; /* Space between the two cards */
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  
+  background-color: #ffffff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  flex-basis: 260px; /* Each card has a base width */
+}
+
+.stat-number {
+  font-size: 3rem; /* Large number */
+  font-weight: 700;
+  color: #181818;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: #7a7a7a;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 40px; /* sub clopoțel */
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 10px 0;
+}
+
+/* Fiecare notificare */
+.notification-item {
+  padding: 12px 18px;
+  border-left: 5px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f0f4f8;
+}
+
+/* Tipuri notificări */
+.notification-item.warning {
+  border-left-color: #f59e0b; /* galben */
+}
+
+.notification-item.info {
+  border-left-color: #3b82f6; /* albastru */
+}
+
+.notification-item.success {
+  border-left-color: #10b981; /* verde */
+}
+
+/* Header-ul fiecărei notificări */
+.notification-from {
+  font-weight: 600;
+  color: #212121;
+}
+
+.notification-date {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.notification-message {
+  font-size: 0.95rem;
+  color: #333;
+}
