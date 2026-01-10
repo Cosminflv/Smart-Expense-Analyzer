@@ -1,0 +1,99 @@
+.monthly-summary-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px;
+}
+
+/* CARD */
+.monthly-summary-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 32px;
+  width: 520px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+}
+
+.summary-left h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.summary-left p {
+  color: #6c757d;
+  margin: 6px 0 12px;
+}
+
+.summary-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* PROGRESS */
+.progress-ring {
+  --size: 84px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: conic-gradient(
+    #111 calc(var(--progress) * 1%),
+    #e9ecef 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring.danger {
+  background: conic-gradient(
+    #e03131 calc(var(--progress) * 1%),
+    #e9ecef 0
+  );
+}
+
+.progress-ring span {
+  background: #fff;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SĂGEȚI */
+.carousel-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.carousel-arrows button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .monthly-summary-wrapper {
+    flex-direction: column;
+  }
+
+  .carousel-arrows {
+    flex-direction: row;
+  }
+
+  .monthly-summary-card {
+    width: 100%;
+  }
+}

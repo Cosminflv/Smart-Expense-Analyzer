@@ -1,53 +1,100 @@
-import React, { useState } from 'react';
-import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
-import { CourseCard, type CourseCardProps } from '../courseCard/courseCard';
+import { useEffect, useState } from "react";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import "./MonthlySummary.css";
 
-// Mock data – sumar lunar financiar
-const monthlySummaries: CourseCardProps[] = [
-  {
-    imageUrl: '/icons/january.png',
-    title: 'January 2026',
-    author: 'Spent: 1,250 €',
-    progress: 62, // % din buget
-  },
-  {
-    imageUrl: '/icons/february.png',
-    title: 'February 2026',
-    author: 'Spent: 980 €',
-    progress: 49,
-  },
-  {
-    imageUrl: '/icons/march.png',
-    title: 'March 2026',
-    author: 'Spent: 1,430 €',
-    progress: 71,
-  },
-];
+type Summary = {
+  totalIncome: number;
+  totalExpenses: number;
+  netSavings: number;
+};
 
-export function MonthlySummary(): React.ReactElement {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const API_URL = import.meta.env.VITE_API_URL as string;
 
-  const goToPrevious = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? monthlySummaries.length - 1 : prev - 1
-    );
-  };
+export function MonthlySummary(): React.ReactElement | null {
+  const [summary, setSummary] = useState<Summary | null>(null);
+  const [index, setIndex] = useState(0);
 
-  const goToNext = () => {
-    setCurrentIndex((prev) =>
-      prev === monthlySummaries.length - 1 ? 0 : prev + 1
-    );
-  };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    fetch(`${API_URL}/api/users/${user.userId}/profile/summary`)
+      .then((res) => res.json())
+      .then(setSummary)
+      .catch(() => setSummary(null));
+  }, []);
+
+  if (!summary) return null;
+
+  const income = summary.totalIncome || 1;
+
+  const cards = [
+    {
+      title: "Income",
+      subtitle: "Total income this month",
+      value: `€ ${summary.totalIncome}`,
+      progress: 100,
+    },
+    {
+      title: "Expenses",
+      subtitle: "Spent from income",
+      value: `€ ${summary.totalExpenses}`,
+      progress: Math.min(
+        Math.round((summary.totalExpenses / income) * 100),
+        100
+      ),
+    },
+    {
+      title: "Savings",
+      subtitle: "Money saved this month",
+      value: `€ ${summary.netSavings}`,
+      progress:
+        summary.netSavings > 0
+          ? Math.min(
+              Math.round((summary.netSavings / income) * 100),
+              100
+            )
+          : 0,
+      danger: summary.netSavings < 0,
+    },
+  ];
+
+  const current = cards[index];
 
   return (
-    <div className="course-carousel-container">
-      <CourseCard {...monthlySummaries[currentIndex]} />
+    <div className="monthly-summary-wrapper">
+      {/* CARD */}
+      <div className="monthly-summary-card">
+        <div className="summary-left">
+          <h3>{current.title}</h3>
+          <p>{current.subtitle}</p>
+          <span className="summary-value">{current.value}</span>
+        </div>
 
-      <div className="nav-arrows">
-        <button className="nav-button" onClick={goToPrevious}>
+        <div
+          className={`progress-ring ${current.danger ? "danger" : ""}`}
+          style={{ ["--progress" as any]: current.progress }}
+        >
+          <span>{current.progress}%</span>
+        </div>
+      </div>
+
+      {/* SĂGEȚI ÎN AFARĂ */}
+      <div className="carousel-arrows">
+        <button
+          onClick={() =>
+            setIndex(index === 0 ? cards.length - 1 : index - 1)
+          }
+        >
           <FiArrowLeft />
         </button>
-        <button className="nav-button" onClick={goToNext}>
+        <button
+          onClick={() =>
+            setIndex(index === cards.length - 1 ? 0 : index + 1)
+          }
+        >
           <FiArrowRight />
         </button>
       </div>
