@@ -1,5 +1,6 @@
 package com.example.smartexpenseanalyzerserver.controllers;
 
+import com.example.smartexpenseanalyzerserver.dtos.statistics.CategoryExpenseDTO;
 import com.example.smartexpenseanalyzerserver.services.TransactionImportService;
 import com.example.smartexpenseanalyzerserver.services.UserProfileService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -72,5 +74,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Eroare la generarea sumarului: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/{userId}/breakdown")
+    public ResponseEntity<List<CategoryExpenseDTO>> getCategoryBreakdown(
+            @PathVariable Long userId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        List<CategoryExpenseDTO> stats = userProfileService.getCategoryBreakdown(userId, startDate, endDate);
+        return ResponseEntity.ok(stats);
     }
 }
