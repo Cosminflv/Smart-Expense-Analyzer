@@ -1,0 +1,124 @@
+.auth-container {
+  width: 500px;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-toggle {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.auth-toggle button {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  color: #bbb;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.auth-toggle button.active {
+  color: #36454F;
+  border-color: #36454F;
+  font-weight: bold;
+}
+
+/* === INPUTS & SELECTS === */
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 55px;
+  padding: 0 1.25rem 0 3rem;
+  border-radius: 50px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  font-size: 1rem;
+  outline: none;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  appearance: none;
+}
+
+/* Icone stânga */
+.icon {
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #aaa;
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+/* Săgeată custom pentru select */
+.input-wrapper select {
+  background-image: url("data:image/svg+xml,%3Csvg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem; /* Spațiu pentru săgeată */
+}
+
+/* === BUTTON === */
+.auth-button {
+  width: 100%;
+  background: #36454F;
+  color: white;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-button:hover {
+  background: #36454F;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 540px) {
+  .auth-container {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  .auth-toggle button {
+    font-size: 1.2rem;
+  }
+
+  .auth-button {
+    font-size: 1rem;
+  }
+
+  .input-wrapper input,
+  .input-wrapper select {
+    font-size: 0.95rem;
+    padding: 0.9rem 1rem 0.9rem 2.8rem;
+  }
+
+  .icon {
+    font-size: 1rem;
+  }
+}
