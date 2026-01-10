@@ -36,15 +36,15 @@ public class UserController {
             @RequestParam("file") MultipartFile file) {
 
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Fișierul este gol.");
+            return ResponseEntity.badRequest().body("The file is empty.");
         }
 
         try (InputStream inputStream = file.getInputStream()) {
             transactionImportService.importTransactions(inputStream, userId);
-            return ResponseEntity.ok("Tranzactiile au fost importate cu succes.");
+            return ResponseEntity.ok("Transactions imported successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Eroare la procesarea fisierului: " + e.getMessage());
+                    .body("Error processing the file: " + e.getMessage());
         }
     }
 
@@ -55,24 +55,24 @@ public class UserController {
             @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
         try {
-            // Cazul 1: Fără filtre de dată -> Sumar Total
+            // Case 1: No date filters -> Total Summary
             if (startDate == null && endDate == null) {
                 Map<String, BigDecimal> summary = userProfileService.getProfileSummary(userId);
                 return ResponseEntity.ok(summary);
             }
 
-            // Cazul 2: Cu filtre de dată -> Sumar Periodic
+            // Case 2: With date filters -> Periodic Summary
             if (startDate != null && endDate != null) {
                 Map<String, BigDecimal> summary = userProfileService.getProfileSummaryPerPeriod(userId, startDate, endDate);
                 return ResponseEntity.ok(summary);
             }
 
-            // Cazul 3: Doar un filtru de dată (lipsesc ambii sau niciunul)
-            return ResponseEntity.badRequest().body("Trebuie să specificați ambele: 'startDate' și 'endDate', sau niciuna.");
+            // Case 3: Only one date filter provided (must verify both or neither)
+            return ResponseEntity.badRequest().body("You must specify both 'startDate' and 'endDate', or neither.");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Eroare la generarea sumarului: " + e.getMessage());
+                    .body("Error generating summary: " + e.getMessage());
         }
     }
 
