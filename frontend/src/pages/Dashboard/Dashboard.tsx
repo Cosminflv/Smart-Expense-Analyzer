@@ -10,8 +10,9 @@ import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
 import { EmptyDashboardState } from "../../components/EmptyDashboardState/EmptyDashboardState";
 
 import "./Dashboard.css";
-import { TransactionsList } from "../../components/TransactionsList /TransactionsList";
+
 import { GettingStartedCard } from "../../components/GettingStartedCard/GettingStartedCard";
+import { TransactionsList } from "../../components/TransactionsList/TransactionsList";
 
 const Dashboard = () => {
   const [hasData, setHasData] = useState<boolean | null>(null);
