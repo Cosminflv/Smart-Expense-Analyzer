@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll() // Allow access to all auth endpoints
                         .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/dashboard/**").permitAll()
                         .anyRequest().authenticated() // All other requests must be authenticated
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)); // For H2 console

@@ -1,37 +1,63 @@
-import {  MonthlySummary } from "../../components/MonthlySummary/MonthlySummary";
+import { useEffect, useState } from "react";
+import { fetchDashboardSummary } from "../../api/dashboard";
 
-import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
-import { DashboardHeader } from "../../components/DashboardHeader/DashboardHeader";
 import { NavbarComponent } from "../../components/navbar/navbar";
-import { ExpensesChart } from "../../components/ExpensesChart/ExpensesChart";
 import { WelcomeCard } from "../../components/welcomeCard/welcomeCard";
-import './Dashboard.css';
+import { MonthlySummary } from "../../components/MonthlySummary/MonthlySummary";
+
+import { ExpensesChart } from "../../components/ExpensesChart/ExpensesChart";
+import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
+import { EmptyDashboardState } from "../../components/EmptyDashboardState/EmptyDashboardState";
+
+import "./Dashboard.css";
 import { TransactionsList } from "../../components/TransactionsList /TransactionsList ";
 
-
 const Dashboard = () => {
+  const [hasData, setHasData] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    fetchDashboardSummary(user.userId)
+      .then((data) => setHasData(data.hasData))
+      .catch(() => setHasData(false));
+  }, []);
+
+  if (hasData === null) {
+    return <div>Loading dashboard...</div>;
+  }
+
   return (
     <div className="user-page-container">
-      {/* Stânga */}
       <div className="user-navbar">
-        <NavbarComponent />
+       <NavbarComponent hasData={hasData} />
+
       </div>
 
-      {/* Mijloc */}
       <div className="user-main">
-        <WelcomeCard />
-        <MonthlySummary />
-        <TransactionsList  />
+        {hasData ? (
+          <>
+            <WelcomeCard />
+            <MonthlySummary />
+            <TransactionsList />
+          </>
+        ) : (
+          <EmptyDashboardState />
+        )}
       </div>
 
-      {/* Dreapta */}
       <div className="user-right">
-        <DashboardHeader />
-        <ExpensesChart />
-        <div className="right-bottom-message">
-         <DailyTipCard/>
-        </div>
-      </div>
+  {hasData && (
+    <>
+      <ExpensesChart />
+      <DailyTipCard />
+    </>
+  )}
+</div>
+
     </div>
   );
 };

@@ -12,4 +12,5 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     List<TransactionEntity> findByUserId(Long userId);
 
     List<TransactionEntity> findByUserIdAndTransactionDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
+    boolean existsByUser_Id(Long userId);
 }

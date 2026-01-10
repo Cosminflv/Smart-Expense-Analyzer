@@ -1,0 +1,61 @@
+.empty-dashboard-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* ocupă toată zona de conținut */
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  padding: 40px;
+}
+
+.empty-dashboard-card {
+  background: #ffffff;
+  border-radius: 20px;
+
+  /* MAI MARE */
+  padding: 64px 72px;
+  max-width: 520px;
+  width: 100%;
+
+  text-align: center;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+.empty-icon {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 28px;
+
+  border-radius: 50%;
+  background: #f1f3f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36px;
+  color: #495057;
+}
+
+.empty-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #212529;
+}
+
+.empty-description {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #6c757d;
+  margin-bottom: 36px;
+}
+
+.primary-button {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+}
