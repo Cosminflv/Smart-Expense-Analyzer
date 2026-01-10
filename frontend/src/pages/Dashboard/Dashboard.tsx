@@ -33,10 +33,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="user-page-container">
-      <div className="user-navbar">
-        <NavbarComponent hasData={hasData} />
-      </div>
+    <>
 
       <div className="user-main">
         {hasData ? (
@@ -60,7 +57,7 @@ const Dashboard = () => {
           <GettingStartedCard />
         )}
       </div>
-    </div>
+    </>
   );
 };
 

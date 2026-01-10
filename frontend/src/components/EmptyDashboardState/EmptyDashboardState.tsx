@@ -1,8 +1,11 @@
 import React from 'react';
 import { FiUpload } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import './EmptyDashboardState.css';
 
 export function EmptyDashboardState(): React.ReactElement {
+  const navigate = useNavigate();
+
   return (
     <div className="empty-dashboard-wrapper">
       <div className="empty-dashboard-card">
@@ -19,7 +22,10 @@ export function EmptyDashboardState(): React.ReactElement {
           your spending, categories and monthly trends.
         </p>
 
-        <button className="primary-button">
+        <button
+          className="primary-button"
+          onClick={() => navigate("/upload")}
+        >
           Upload bank statement
         </button>
       </div>
