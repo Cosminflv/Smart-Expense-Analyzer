@@ -1,11 +1,101 @@
+/* =========================
+   WELCOME CARD
+   ========================= */
+
+.welcome-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  padding: 28px 32px;
+  margin: 20px;
+  width: 100%;
+  max-width: 720px;
+
+  box-sizing: border-box;
+}
+
+.welcome-text-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.welcome-heading {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: #212121;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+.welcome-subtext {
+  font-size: 1rem;
+  color: #6a6a6a;
+  margin: 0;
+}
+
+.welcome-image-container {
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.welcome-human-image {
+  width: 100%;
+  max-width: 110px;
+  height: auto;
+  display: block;
+}
+
+/* 📱 WelcomeCard – Mobile */
+@media (max-width: 600px) {
+  .welcome-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+    margin: 12px;
+  }
+
+  .welcome-image-container {
+    margin-left: 0;
+    margin-top: 20px;
+  }
+
+  .welcome-human-image {
+    max-width: 96px;
+  }
+}
+
+/* 📱 WelcomeCard – Small phones */
+@media (max-width: 360px) {
+  .welcome-card {
+    padding: 20px;
+  }
+
+  .welcome-subtext {
+    font-size: 0.95rem;
+  }
+}
+
+/* =========================
+   AUTH (LOGIN / REGISTER)
+   ========================= */
+
 .auth-container {
-  width: 500px;
-  background: #fff;
+  width: 100%;
+  max-width: 500px;
+
+  background: #ffffff;
   padding: 3rem;
   border-radius: 24px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
   font-family: "Segoe UI", sans-serif;
   margin: 0 auto;
+
   position: relative;
   z-index: 1;
 }
@@ -30,12 +120,13 @@
 }
 
 .auth-toggle button.active {
-  color: #36454F;
-  border-color: #36454F;
+  color: #36454f;
+  border-color: #36454f;
   font-weight: bold;
 }
 
-/* === INPUTS & SELECTS === */
+/* === INPUTS === */
+
 .input-wrapper {
   position: relative;
   margin-bottom: 1.5rem;
@@ -48,9 +139,11 @@
   width: 100%;
   height: 55px;
   padding: 0 1.25rem 0 3rem;
+
   border-radius: 50px;
   border: 1px solid #ddd;
   background: #f5f5f5;
+
   font-size: 1rem;
   outline: none;
   font-family: "Segoe UI", sans-serif;
@@ -58,7 +151,7 @@
   appearance: none;
 }
 
-/* Icone stânga */
+/* Left icon */
 .icon {
   position: absolute;
   left: 1rem;
@@ -71,37 +164,43 @@
   pointer-events: none;
 }
 
-/* Săgeată custom pentru select */
+/* Select arrow */
 .input-wrapper select {
   background-image: url("data:image/svg+xml,%3Csvg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.2rem center;
   background-size: 1rem;
-  padding-right: 2.5rem; /* Spațiu pentru săgeată */
+  padding-right: 2.5rem;
 }
 
 /* === BUTTON === */
+
 .auth-button {
   width: 100%;
-  background: #36454F;
+  background: #36454f;
   color: white;
   padding: 1rem;
+
   font-size: 1.2rem;
   border: none;
   border-radius: 50px;
   cursor: pointer;
+
   transition: background 0.3s ease;
 }
 
 .auth-button:hover {
-  background: #36454F;
+  background: #2e3a42;
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 540px) {
+/* =========================
+   AUTH – RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
   .auth-container {
-    width: 90%;
-    padding: 2rem;
+    padding: 2rem 1.75rem;
+    border-radius: 20px;
   }
 
   .auth-toggle button {
@@ -109,16 +208,28 @@
   }
 
   .auth-button {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .input-wrapper input,
   .input-wrapper select {
+    height: 52px;
     font-size: 0.95rem;
-    padding: 0.9rem 1rem 0.9rem 2.8rem;
+    padding-left: 2.8rem;
   }
 
   .icon {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* 📱 Extra small phones */
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 1.5rem;
+  }
+
+  .auth-toggle button {
+    font-size: 1.05rem;
   }
 }
