@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { CourseCard, type CourseCardProps } from '../courseCard/courseCard';
 
-const mockCourses: CourseCardProps[] = [
+// Mock data – sumar lunar financiar
+const monthlySummaries: CourseCardProps[] = [
   {
-    imageUrl: 'https://png.pngtree.com/png-vector/20221118/ourmid/pngtree-flat-style-audit-icon-with-result-report-on-white-background-vector-png-image_41384148.jpg', 
-    title: 'Company Overview',
-    author: 'by HR Team',
-    progress: 30,
-  }, 
-    {
-    imageUrl: 'https://cdn-icons-png.flaticon.com/512/102/102649.png', 
-    title: 'IT Security Basics',
-    author: 'by IT Department',
-    progress: 50,
+    imageUrl: '/icons/january.png',
+    title: 'January 2026',
+    author: 'Spent: 1,250 €',
+    progress: 62, // % din buget
   },
- {
-    imageUrl: 'https://img.freepik.com/premium-vector/process-icon_1134231-32251.jpg', 
-    title: 'Internal Tools Training',
-    author: 'by IT Support',
-    progress: 10,
+  {
+    imageUrl: '/icons/february.png',
+    title: 'February 2026',
+    author: 'Spent: 980 €',
+    progress: 49,
+  },
+  {
+    imageUrl: '/icons/march.png',
+    title: 'March 2026',
+    author: 'Spent: 1,430 €',
+    progress: 71,
   },
 ];
 
@@ -28,20 +28,20 @@ export function MonthlySummary(): React.ReactElement {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrevious = () => {
-    const isFirstCard = currentIndex === 0;
-    const newIndex = isFirstCard ? mockCourses.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+    setCurrentIndex((prev) =>
+      prev === 0 ? monthlySummaries.length - 1 : prev - 1
+    );
   };
 
   const goToNext = () => {
-    const isLastCard = currentIndex === mockCourses.length - 1;
-    const newIndex = isLastCard ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+    setCurrentIndex((prev) =>
+      prev === monthlySummaries.length - 1 ? 0 : prev + 1
+    );
   };
 
   return (
     <div className="course-carousel-container">
-      <CourseCard {...mockCourses[currentIndex]} />
+      <CourseCard {...monthlySummaries[currentIndex]} />
 
       <div className="nav-arrows">
         <button className="nav-button" onClick={goToPrevious}>

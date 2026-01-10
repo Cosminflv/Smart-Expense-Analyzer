@@ -1,12 +1,11 @@
 import React from 'react';
 import './courseCard.css';
 
-
 export interface CourseCardProps {
   imageUrl: string;
   title: string;
   author: string;
-  progress: number;
+  progress: number; // % din bugetul lunar
 }
 
 export function CourseCard({
@@ -15,8 +14,6 @@ export function CourseCard({
   author,
   progress,
 }: CourseCardProps): React.ReactElement {
-  
-
   const progressStyle = {
     '--progress-value': `${progress}%`,
   } as React.CSSProperties;
@@ -24,7 +21,7 @@ export function CourseCard({
   return (
     <div className="course-card">
       <img src={imageUrl} alt={title} className="course-icon" />
-      
+
       <div className="course-info">
         <span className="course-title">{title}</span>
         <span className="course-author">{author}</span>
@@ -35,8 +32,6 @@ export function CourseCard({
           <span className="progress-text">{progress}%</span>
         </div>
       </div>
-
-      <button className="continue-button">Continue</button>
     </div>
   );
 }

@@ -12,26 +12,26 @@ interface FeedbackItem {
 const feedbackData: FeedbackItem[] = [
   {
     type: 'warning',
-    message: 'You have not completed the "IT Security Basics" quiz.',
-    date: 'Nov 10, 2025'
+    message: 'You have exceeded your food budget for this month.',
+    date: 'Jan 10, 2026',
   },
   {
     type: 'info',
-    message: 'You have only spent 2 hours learning this week.',
-    date: 'Nov 9, 2025'
+    message: 'You spent 120 € on groceries this week.',
+    date: 'Jan 9, 2026',
   },
   {
     type: 'success',
-    message: 'You completed the "Company Overview" module. Great job!',
-    date: 'Nov 8, 2025'
-  }
+    message: 'Great job! You stayed within your monthly budget.',
+    date: 'Jan 8, 2026',
+  },
 ];
 
 export function DashboardHeader(): React.ReactElement {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
+    setShowNotifications((prev) => !prev);
   };
 
   return (
@@ -39,23 +39,30 @@ export function DashboardHeader(): React.ReactElement {
       <div className="header-top-row">
         <div className="search-bar">
           <FiSearch className="search-icon" />
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Search transactions..." />
         </div>
 
         <div className="user-controls">
           <div style={{ position: 'relative' }}>
-            <button className="notification-button" onClick={toggleNotifications}>
+            <button
+              className="notification-button"
+              onClick={toggleNotifications}
+            >
               <FiBell className="bell-icon" />
               <span className="notification-badge"></span>
             </button>
 
-            {/* Dropdown feedback */}
             {showNotifications && (
               <div className="notification-dropdown">
                 {feedbackData.map((item, idx) => (
-                  <div key={idx} className={`notification-item ${item.type}`}>
+                  <div
+                    key={idx}
+                    className={`notification-item ${item.type}`}
+                  >
                     <div className="notification-date">{item.date}</div>
-                    <div className="notification-message">{item.message}</div>
+                    <div className="notification-message">
+                      {item.message}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -63,28 +70,32 @@ export function DashboardHeader(): React.ReactElement {
           </div>
 
           <div className="profile-section">
-            <img src={userAvatar} alt="User Avatar" className="profile-avatar" />
+            <img
+              src={userAvatar}
+              alt="User Avatar"
+              className="profile-avatar"
+            />
             <FiChevronDown className="profile-arrow" />
           </div>
         </div>
       </div>
 
-      {/* Stat cards rămân la fel */}
       <div className="header-stats-row">
         <div className="stat-card">
-          <span className="stat-number">11</span>
+          <span className="stat-number">128</span>
           <span className="stat-label">
-            Courses
+            Transactions
             <br />
-            completed
+            this month
           </span>
         </div>
+
         <div className="stat-card">
-          <span className="stat-number">4</span>
+          <span className="stat-number">7</span>
           <span className="stat-label">
-            Courses
+            Categories
             <br />
-            in progress
+            used
           </span>
         </div>
       </div>

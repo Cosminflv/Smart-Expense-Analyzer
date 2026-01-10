@@ -1,11 +1,12 @@
 import {  MonthlySummary } from "../../components/MonthlySummary/MonthlySummary";
-import {  TransactionsList } from "../../components/TransactionsList /TransactionsList ";
+
 import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
 import { DashboardHeader } from "../../components/DashboardHeader/DashboardHeader";
 import { NavbarComponent } from "../../components/navbar/navbar";
 import { ExpensesChart } from "../../components/ExpensesChart/ExpensesChart";
 import { WelcomeCard } from "../../components/welcomeCard/welcomeCard";
 import './Dashboard.css';
+import { TransactionsList } from "../../components/TransactionsList /TransactionsList ";
 
 
 const Dashboard = () => {

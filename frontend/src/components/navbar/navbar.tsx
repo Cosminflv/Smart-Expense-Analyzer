@@ -1,53 +1,72 @@
 import { NavLink } from 'react-router-dom';
-import { 
-  FiHome, 
-  FiLogOut, 
-  FiMessageSquare 
+import {
+  FiHome,
+  FiLogOut,
+  FiUpload,
+  FiList,
 } from 'react-icons/fi';
-import { MdFactCheck } from "react-icons/md";
-import { MdOutlineOndemandVideo } from "react-icons/md";
-import { BsHeadsetVr } from "react-icons/bs";
-import { FaGraduationCap,FaChartLine } from 'react-icons/fa';
-import './Navbar.css'; 
+import { FaChartLine, FaWallet } from 'react-icons/fa';
+import './Navbar.css';
 
 export function NavbarComponent() {
   return (
     <div className="vertical-navbar">
       <div className="navbar-top">
-        <div className="logo">Synapz</div>
-        
+        <div className="logo">ExpenseTracker</div>
+
         <nav className="nav-icons">
-          <NavLink to="/user-dashboard" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="Dashboard">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? 'nav-icon active' : 'nav-icon'
+            }
+            title="Dashboard"
+          >
             <FiHome />
           </NavLink>
 
-          <NavLink to="/learning-modules" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="Learning Modules">
-            <FaGraduationCap />
+          <NavLink
+            to="/upload"
+            className={({ isActive }) =>
+              isActive ? 'nav-icon active' : 'nav-icon'
+            }
+            title="Upload CSV"
+          >
+            <FiUpload />
           </NavLink>
 
-          <NavLink to="/quizzes" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="Quizzes">
-            <MdFactCheck />
+          <NavLink
+            to="/transactions"
+            className={({ isActive }) =>
+              isActive ? 'nav-icon active' : 'nav-icon'
+            }
+            title="Transactions"
+          >
+            <FiList />
           </NavLink>
 
-          <NavLink to="/chatbox" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="HR Feedback">
-            <FiMessageSquare />
-          </NavLink>
-
-          <NavLink to="/video" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="Video">
-            <MdOutlineOndemandVideo />
-          </NavLink>
-
-          <NavLink to="/vr" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="VR">
-            <BsHeadsetVr />
-          </NavLink>
-
-          <NavLink to="/progress" className={({ isActive }) => isActive ? 'nav-icon active' : 'nav-icon'} title="Progress">
+          <NavLink
+            to="/analytics"
+            className={({ isActive }) =>
+              isActive ? 'nav-icon active' : 'nav-icon'
+            }
+            title="Analytics"
+          >
             <FaChartLine />
           </NavLink>
-            
+
+          <NavLink
+            to="/budgets"
+            className={({ isActive }) =>
+              isActive ? 'nav-icon active' : 'nav-icon'
+            }
+            title="Budgets"
+          >
+            <FaWallet />
+          </NavLink>
         </nav>
       </div>
-      
+
       <div className="navbar-bottom">
         <NavLink to="/logout" className="nav-icon" title="Logout">
           <FiLogOut />

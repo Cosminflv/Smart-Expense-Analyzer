@@ -3,6 +3,7 @@ import './App.css'
 import { MantineProvider } from '@mantine/core'
 import AuthPage from './pages/AuthPage/AuthPage'
 import Dashboard from './pages/Dashboard/Dashboard'
+import '@mantine/core/styles.css'
 
 function App() {
 
