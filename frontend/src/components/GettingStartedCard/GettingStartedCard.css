@@ -1,0 +1,31 @@
+.getting-started-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+}
+
+.getting-started-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.getting-started-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.getting-started-card li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: #495057;
+  margin-bottom: 14px;
+}
+
+.getting-started-card svg {
+  font-size: 1.2rem;
+}

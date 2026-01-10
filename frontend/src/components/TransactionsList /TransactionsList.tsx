@@ -1,5 +1,5 @@
 import React from 'react';
-import './TransactionsList .css';
+import './TransactionsList.css';
 
 interface TransactionItemProps {
   id: string;

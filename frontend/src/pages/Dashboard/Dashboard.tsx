@@ -10,7 +10,8 @@ import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
 import { EmptyDashboardState } from "../../components/EmptyDashboardState/EmptyDashboardState";
 
 import "./Dashboard.css";
-import { TransactionsList } from "../../components/TransactionsList /TransactionsList ";
+import { TransactionsList } from "../../components/TransactionsList /TransactionsList";
+import { GettingStartedCard } from "../../components/GettingStartedCard/GettingStartedCard";
 
 const Dashboard = () => {
   const [hasData, setHasData] = useState<boolean | null>(null);
@@ -33,8 +34,7 @@ const Dashboard = () => {
   return (
     <div className="user-page-container">
       <div className="user-navbar">
-       <NavbarComponent hasData={hasData} />
-
+        <NavbarComponent hasData={hasData} />
       </div>
 
       <div className="user-main">
@@ -50,14 +50,15 @@ const Dashboard = () => {
       </div>
 
       <div className="user-right">
-  {hasData && (
-    <>
-      <ExpensesChart />
-      <DailyTipCard />
-    </>
-  )}
-</div>
-
+        {hasData ? (
+          <>
+            <ExpensesChart />
+            <DailyTipCard />
+          </>
+        ) : (
+          <GettingStartedCard />
+        )}
+      </div>
     </div>
   );
 };
