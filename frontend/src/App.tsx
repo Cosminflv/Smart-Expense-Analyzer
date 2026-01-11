@@ -8,6 +8,9 @@ import UploadPage from "./pages/UploadPage/UploadPage";
 import AppLayout from "./layouts/AppLayout";
 import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import { Transactions } from "./pages/Transactions/Transactions";
+import Analytics from "./pages/Analytics/Analytics";
+import '@mantine/charts/styles.css';
+
 
 function App() {
   return (
@@ -21,7 +24,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/transactions" element={<Transactions />} />
-          <Route path="/analystics" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics/>} />
           <Route path="/budgets" element={<Dashboard />} />
           <Route path="/logout" element={<Dashboard />} />
           </Route>

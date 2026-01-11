@@ -58,15 +58,6 @@ export function NavbarComponent({ hasData }: NavbarProps) {
           >
             <FaChartLine />
           </NavLink>
-
-          <NavLink
-            to="/budgets"
-            className={`nav-icon ${!hasData ? "disabled" : ""}`}
-            title="Budgets"
-            onClick={(e) => disabledHandler(e, hasData)}
-          >
-            <FaWallet />
-          </NavLink>
         </nav>
       </div>
 

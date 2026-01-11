@@ -1,0 +1,22 @@
+.current-month-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stats-card {
+  text-align: center;
+  padding: 20px;
+}
+
+.stats-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #181818;
+  margin-bottom: 6px;
+}
+
+.stats-label {
+  font-size: 0.9rem;
+  color: #6a6a6a;
+}

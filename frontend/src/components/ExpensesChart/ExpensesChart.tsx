@@ -79,7 +79,7 @@ export function ExpensesChart(): React.ReactElement {
           },
         ]}
         withLegend={false}
-        withTooltip={false}
+        withTooltip={true}
         yAxisProps={{
           tickFormatter: (v) => `${v} €`,
         }}
