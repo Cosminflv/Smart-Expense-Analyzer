@@ -95,4 +95,9 @@ public class UserController {
         return ResponseEntity.ok(history);
     }
 
+    @DeleteMapping("/{userId}/transactions")
+    public ResponseEntity<String> clearTransactions(@PathVariable Long userId) {
+        userProfileService.clearUserTransactions(userId);
+        return ResponseEntity.ok("All transactions for user " + userId + " have been deleted.");
+    }
 }

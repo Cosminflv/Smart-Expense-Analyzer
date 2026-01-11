@@ -33,4 +33,5 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             LocalDate endDate
     );
 
+    void deleteByUserId(Long userId);
 }

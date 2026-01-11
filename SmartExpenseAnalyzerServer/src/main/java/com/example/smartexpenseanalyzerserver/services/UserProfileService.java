@@ -4,6 +4,7 @@ import com.example.smartexpenseanalyzerserver.dtos.statistics.*;
 import com.example.smartexpenseanalyzerserver.entities.TransactionCategory;
 import com.example.smartexpenseanalyzerserver.entities.TransactionEntity;
 import com.example.smartexpenseanalyzerserver.repositories.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -109,5 +110,11 @@ public class UserProfileService {
                         .category(t.getCategory())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void clearUserTransactions(Long userId) {
+        // This removes all entries for this user from the database
+        transactionRepository.deleteByUserId(userId);
     }
 }
