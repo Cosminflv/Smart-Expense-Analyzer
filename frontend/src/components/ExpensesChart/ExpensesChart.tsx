@@ -1,62 +1,85 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper, Title } from '@mantine/core';
-import { LineChart } from '@mantine/charts';
+import { BarChart } from '@mantine/charts';
 
-type ChartPoint = {
-  category: string;
+type MonthlyPoint = {
+  month: string;
   amount: number;
+};
+
+type SummaryResponse = {
+  totalIncome: number;
+  totalExpenses: number;
+  netSavings: number;
 };
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
+function toISO(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
 export function ExpensesChart(): React.ReactElement {
-  const [data, setData] = useState<ChartPoint[]>([]);
+  const [data, setData] = useState<MonthlyPoint[]>([]);
+  const year = 2025; // sau new Date().getFullYear()
 
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
     if (!storedUser) return;
 
-    const user = JSON.parse(storedUser);
+    const { userId } = JSON.parse(storedUser);
 
-    // hardcodăm doar perioada TEMPORAR
-    const startDate = '2025-01-01';
-    const endDate = '2025-01-31';
+    async function load() {
+      const months = Array.from({ length: 12 }, (_, i) => i);
 
-    fetch(
-      `${API_URL}/api/users/${user.userId}/breakdown?startDate=${startDate}&endDate=${endDate}`
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        const mapped = result.map((item: any) => ({
-          category: item.transactionCategory,
-          amount: Number(item.totalAmount),
-        }));
+      const results = await Promise.all(
+        months.map(async (m) => {
+          const start = new Date(year, m, 1);
+          const end = new Date(year, m + 1, 0);
 
-        setData(mapped);
-      })
-      .catch(() => setData([]));
-  }, []);
+          const res = await fetch(
+            `${API_URL}/api/users/${userId}/profile/summary?startDate=${toISO(
+              start
+            )}&endDate=${toISO(end)}`
+          );
 
-  if (data.length === 0) {
-    return (
-      <Paper withBorder p="lg">
-        <Title order={4}>No expense data</Title>
-      </Paper>
-    );
-  }
+          if (!res.ok) {
+            return { month: start.toLocaleString('en', { month: 'short' }), amount: 0 };
+          }
+
+          const json: SummaryResponse = await res.json();
+
+          return {
+            month: start.toLocaleString('en', { month: 'short' }),
+            amount: Number(json.totalExpenses || 0),
+          };
+        })
+      );
+
+      setData(results);
+    }
+
+    load();
+  }, [year]);
 
   return (
-    <Paper withBorder radius="md" p="lg" style={{ height: 350 }}>
+    <Paper withBorder radius="md" p="lg" className="stats-container">
       <Title order={3} mb="md">
-        Expenses by category
+        Expenses per month ({year})
       </Title>
 
-      <LineChart
+      <BarChart
+        h={260}
         data={data}
-        dataKey="category"
-        series={[{ name: 'amount', color: 'dark' }]}
-        h={250}
-        withDots
+        dataKey="month"
+        series={[
+          {
+            name: 'amount',
+            color: 'dark.6',
+          },
+        ]}
+        withLegend={false}
+        withTooltip={false}
         yAxisProps={{
           tickFormatter: (v) => `${v} €`,
         }}
