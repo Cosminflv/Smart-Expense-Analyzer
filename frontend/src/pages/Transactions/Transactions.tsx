@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Transactions.css";
+import { TransactionsInsights } from "../../components/TransactionsInsights/TransactionsInsights";
+
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-type Transaction = {
+export type Transaction = {
   id: number;
   date: string;
   description: string;
@@ -24,7 +26,6 @@ export function Transactions() {
   const userId = storedUser ? JSON.parse(storedUser).userId : null;
 
   useEffect(() => {
-    // default: luna curentă
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), 1);
 
@@ -47,43 +48,49 @@ export function Transactions() {
   }
 
   return (
-    <div className="transactions-page">
-      <h2>Transactions</h2>
+    <>
+      {/* LEFT – identic ca Dashboard */}
+      <div className="user-main">
+        <h2>Transactions</h2>
 
-      {/* DATE FILTER */}
-      <div className="date-filter">
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
+        <div className="date-filter">
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
 
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
 
-        <button onClick={loadTransactions}>Apply</button>
-      </div>
+          <button onClick={loadTransactions}>Apply</button>
+        </div>
 
-      {/* LIST */}
-      <div className="transactions-list">
-        {transactions.map((t) => (
-          <div key={t.id} className="transaction-row">
-            <div>
-              <div className="description">{t.description}</div>
-              <div className="meta">
-                {t.category} • {t.date}
+        <div className="transactions-list">
+          {transactions.map((t) => (
+            <div key={t.id} className="transaction-row">
+              <div>
+                <div className="description">{t.description}</div>
+                <div className="meta">
+                  {t.category} • {t.date}
+                </div>
+              </div>
+
+              <div className={`amount ${t.amount < 0 ? "expense" : "income"}`}>
+                {t.amount.toFixed(2)} €
               </div>
             </div>
-
-            <div className={`amount ${t.amount < 0 ? "expense" : "income"}`}>
-              {t.amount.toFixed(2)} €
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* RIGHT – exact ca Dashboard */}
+      <div className="user-right">
+        <TransactionsInsights transactions={transactions} />
+      </div>
+    </>
   );
 }
