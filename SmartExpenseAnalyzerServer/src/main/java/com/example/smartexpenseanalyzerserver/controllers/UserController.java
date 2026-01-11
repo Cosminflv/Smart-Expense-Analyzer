@@ -138,12 +138,12 @@ public class UserController {
         return ResponseEntity.ok(history);
     }
 
-    @GetMapping("/{userId}/highlights/yearly-breakdown")
-    public ResponseEntity<List<MonthlyTopCategoryDTO>> getYearlyTopCategories(
+    @GetMapping("/{userId}/highlights/monthly-breakdown")
+    public ResponseEntity<List<MonthlyTopCategoryDTO>> getMonthlyTopCategories(
             @PathVariable Long userId,
             @RequestParam("year") int year) {
 
-        List<MonthlyTopCategoryDTO> report = userProfileService.getYearlyTopCategoriesWithDetails(userId, year);
+        List<MonthlyTopCategoryDTO> report = userProfileService.getMonthlyTopCategoriesWithDetails(userId, year);
         return ResponseEntity.ok(report);
     }
 }

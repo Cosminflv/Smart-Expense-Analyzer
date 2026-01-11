@@ -302,7 +302,7 @@ public class UserProfileService {
     /**
      * Returns for each month the most spent on TransactionCategory with attached transactions.
      */
-    public List<MonthlyTopCategoryDTO> getYearlyTopCategoriesWithDetails(Long userId, int year) {
+    public List<MonthlyTopCategoryDTO> getMonthlyTopCategoriesWithDetails(Long userId, int year) {
         List<MonthlyTopCategoryDTO> yearlyReport = new ArrayList<>();
 
         // Iterate through all 12 months
