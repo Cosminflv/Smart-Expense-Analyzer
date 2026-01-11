@@ -6,7 +6,8 @@
   box-sizing: border-box; /* Ensures padding doesn't add to width */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #f8f8f8; /* Light background, adjust as needed */
-  border-bottom: 1px solid #eee; /* Optional separator line */
+  border-bottom: 1px solid #eee;
+  margin-top: 20px; /* Optional separator line */
 }
 
 /* 1. Top Row Styles */
