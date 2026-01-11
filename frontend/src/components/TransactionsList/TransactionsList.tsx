@@ -34,8 +34,11 @@ function TransactionItem({
 export function TransactionsList(): React.ReactElement {
   const [transactions, setTransactions] = useState<TransactionItemProps[]>([]);
 
+    const user = JSON.parse(localStorage.getItem("currentUser")!);
+    const userId = user.userId;
+
   useEffect(() => {
-    fetch("http://localhost:8080/api/users/1/transactions/recent")
+    fetch(`http://localhost:8080/api/users/${userId}/transactions/recent`)
       .then((res) => res.json())
       .then((data) => {
         setTransactions(
