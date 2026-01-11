@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
-import './DashboardHeader.css';
-import { FiSearch, FiBell, FiChevronDown } from 'react-icons/fi';
+import { useEffect, useState } from "react";
+import "./DashboardHeader.css";
+
+const API_URL = import.meta.env.VITE_API_URL as string;
+
+type CurrentMonthStats = {
+  transactionCount: number;
+  categoryCount: number;
+};
 
 export function DashboardHeader(): React.ReactElement {
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [stats, setStats] = useState<CurrentMonthStats | null>(null);
 
-  const toggleNotifications = () => {
-    setShowNotifications((prev) => !prev);
-  };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) return;
+
+    const { userId } = JSON.parse(storedUser);
+
+    fetch(`${API_URL}/api/users/${userId}/stats/current-month`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch current month stats");
+        }
+        return res.json();
+      })
+      .then((data: CurrentMonthStats) => {
+        setStats(data);
+      })
+      .catch(() => {
+        setStats(null);
+      });
+  }, []);
 
   return (
     <div className="dashboard-header-container">
@@ -15,7 +38,9 @@ export function DashboardHeader(): React.ReactElement {
 
       <div className="header-stats-row">
         <div className="stat-card">
-          <span className="stat-number">128</span>
+          <span className="stat-number">
+            {stats ? stats.transactionCount : "—"}
+          </span>
           <span className="stat-label">
             Transactions
             <br />
@@ -24,7 +49,9 @@ export function DashboardHeader(): React.ReactElement {
         </div>
 
         <div className="stat-card">
-          <span className="stat-number">7</span>
+          <span className="stat-number">
+            {stats ? stats.categoryCount : "—"}
+          </span>
           <span className="stat-label">
             Categories
             <br />
