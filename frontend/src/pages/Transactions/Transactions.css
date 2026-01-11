@@ -1,0 +1,65 @@
+.transactions-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.description {
+  font-weight: 600;
+  color: #181818;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.amount.expense {
+  color: #d64545;
+}
+
+.amount.income {
+  color: #2f9e44;
+}
+.date-filter {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.date-filter input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.9rem;
+}
+
+.date-filter button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #181818;
+  color: white;
+  cursor: pointer;
+}
