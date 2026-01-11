@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Paper, Title } from '@mantine/core';
-import { BarChart } from '@mantine/charts';
+import { useEffect, useState } from "react";
+import { Paper, Title, Select, Group } from "@mantine/core";
+import { BarChart } from "@mantine/charts";
 
 type MonthlyPoint = {
   month: string;
@@ -21,10 +21,16 @@ function toISO(date: Date) {
 
 export function ExpensesChart(): React.ReactElement {
   const [data, setData] = useState<MonthlyPoint[]>([]);
-  const year = 2025; // sau new Date().getFullYear()
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+
+  // ani disponibili (poți ajusta ușor)
+  const yearOptions = Array.from({ length: 5 }, (_, i) => {
+    const y = new Date().getFullYear() - i;
+    return { value: String(y), label: String(y) };
+  });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
+    const storedUser = localStorage.getItem("currentUser");
     if (!storedUser) return;
 
     const { userId } = JSON.parse(storedUser);
@@ -44,13 +50,16 @@ export function ExpensesChart(): React.ReactElement {
           );
 
           if (!res.ok) {
-            return { month: start.toLocaleString('en', { month: 'short' }), amount: 0 };
+            return {
+              month: start.toLocaleString("en", { month: "short" }),
+              amount: 0,
+            };
           }
 
           const json: SummaryResponse = await res.json();
 
           return {
-            month: start.toLocaleString('en', { month: 'short' }),
+            month: start.toLocaleString("en", { month: "short" }),
             amount: Number(json.totalExpenses || 0),
           };
         })
@@ -64,9 +73,18 @@ export function ExpensesChart(): React.ReactElement {
 
   return (
     <Paper withBorder radius="md" p="lg" className="stats-container">
-      <Title order={3} mb="md">
-        Expenses per month ({year})
-      </Title>
+      {/* Header */}
+      <Group justify="space-between" mb="md">
+        <Title order={3}>Expenses per month</Title>
+
+        <Select
+          data={yearOptions}
+          value={String(year)}
+          onChange={(v) => v && setYear(Number(v))}
+          size="sm"
+          w={100}
+        />
+      </Group>
 
       <BarChart
         h={260}
@@ -74,12 +92,12 @@ export function ExpensesChart(): React.ReactElement {
         dataKey="month"
         series={[
           {
-            name: 'amount',
-            color: 'dark.6',
+            name: "amount",
+            color: "dark.6",
           },
         ]}
         withLegend={false}
-        withTooltip={true}
+        withTooltip
         yAxisProps={{
           tickFormatter: (v) => `${v} €`,
         }}
