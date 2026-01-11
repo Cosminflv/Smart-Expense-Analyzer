@@ -27,19 +27,27 @@ export function CategoryDonutChart(): React.ReactElement {
   const [data, setData] = useState<DonutSlice[]>([]);
   const [total, setTotal] = useState(0);
 
+  // 📅 date selector
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // default: last 12 months
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
-
-    const { userId } = JSON.parse(storedUser);
-
-    // 🔥 last 12 months (dynamic, no hardcoding)
     const end = new Date();
     const start = new Date();
     start.setFullYear(end.getFullYear() - 1);
 
-    const startDate = toISO(start);
-    const endDate = toISO(end);
+    setStartDate(toISO(start));
+    setEndDate(toISO(end));
+  }, []);
+
+  useEffect(() => {
+    if (!startDate || !endDate) return;
+
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) return;
+
+    const { userId } = JSON.parse(storedUser);
 
     fetch(
       `${API_URL}/api/statistics/${userId}/breakdown?startDate=${startDate}&endDate=${endDate}`
@@ -48,6 +56,7 @@ export function CategoryDonutChart(): React.ReactElement {
       .then((result) => {
         if (!Array.isArray(result)) {
           setData([]);
+          setTotal(0);
           return;
         }
 
@@ -64,25 +73,14 @@ export function CategoryDonutChart(): React.ReactElement {
           0
         );
 
-        setTotal(totalAmount);
         setData(mapped);
+        setTotal(totalAmount);
       })
       .catch(() => {
         setData([]);
         setTotal(0);
       });
-  }, []);
-
-  if (data.length === 0) {
-    return (
-      <Paper withBorder radius="md" p="lg">
-        <Title order={4}>Spending by category</Title>
-        <Text size="sm" c="dimmed">
-          No data available
-        </Text>
-      </Paper>
-    );
-  }
+  }, [startDate, endDate]);
 
   return (
     <Paper withBorder radius="md" p="lg">
@@ -90,19 +88,50 @@ export function CategoryDonutChart(): React.ReactElement {
         Spending by category
       </Title>
 
-      <DonutChart
-        data={data}
-        size={220}
-        thickness={28}
-        withTooltip
-      />
+      {/* DATE SELECTOR */}
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          marginBottom: 16,
+          flexWrap: "wrap",
+        }}
+      >
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
 
-      <Text ta="center" mt="md" fw={600}>
-        Total spent
-      </Text>
-      <Text ta="center" size="lg">
-        {total.toFixed(2)} €
-      </Text>
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+      </div>
+
+      {data.length === 0 ? (
+        <Text size="sm" c="dimmed">
+          No data available for selected period
+        </Text>
+      ) : (
+        <>
+          <DonutChart
+            data={data}
+            size={220}
+            thickness={28}
+            withTooltip
+            
+          />
+
+          <Text ta="center" mt="md" fw={600}>
+            Total spent
+          </Text>
+          <Text ta="center" size="lg">
+            {total.toFixed(2)} €
+          </Text>
+        </>
+      )}
     </Paper>
   );
 }
