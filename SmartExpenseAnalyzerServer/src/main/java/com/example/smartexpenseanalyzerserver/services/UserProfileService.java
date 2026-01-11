@@ -12,6 +12,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -368,6 +369,30 @@ public class UserProfileService {
         }
 
         return yearlyReport;
+    }
+
+    public CurrentMonthStatsDTO getCurrentMonthStats(Long userId) {
+        // 1. Determine the date range for the current month
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.withDayOfMonth(1);
+        LocalDate endDate = now.with(TemporalAdjusters.lastDayOfMonth());
+
+        // 2. Fetch all transactions for this month
+        List<TransactionEntity> transactions = transactionRepository
+                .findByUserIdAndTransactionDateBetween(userId, startDate, endDate);
+
+        // 3. Calculate the counts
+        long totalTransactions = transactions.size();
+
+        long uniqueCategories = transactions.stream()
+                .map(TransactionEntity::getCategory)
+                .distinct() // Filter to keep only unique categories
+                .count();
+
+        return CurrentMonthStatsDTO.builder()
+                .transactionCount(totalTransactions)
+                .categoryCount(uniqueCategories)
+                .build();
     }
 
 }

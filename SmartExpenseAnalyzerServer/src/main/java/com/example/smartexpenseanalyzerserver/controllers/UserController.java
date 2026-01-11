@@ -146,4 +146,11 @@ public class UserController {
         List<MonthlyTopCategoryDTO> report = userProfileService.getMonthlyTopCategoriesWithDetails(userId, year);
         return ResponseEntity.ok(report);
     }
+
+    @GetMapping("/{userId}/stats/current-month")
+    public ResponseEntity<CurrentMonthStatsDTO> getCurrentMonthStats(@PathVariable Long userId) {
+        return ResponseEntity.ok(
+                userProfileService.getCurrentMonthStats(userId)
+        );
+    }
 }
