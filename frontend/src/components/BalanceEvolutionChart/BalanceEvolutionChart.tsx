@@ -27,7 +27,7 @@ export function BalanceEvolutionChart(): React.ReactElement {
     const endDate = end.toISOString().slice(0, 10);
 
     fetch(
-      `${API_URL}/api/users/${userId}/trends/balance?startDate=${startDate}&endDate=${endDate}`
+      `${API_URL}/api/statistics/${userId}/trends/balance?startDate=${startDate}&endDate=${endDate}`
     )
       .then((res) => res.json())
       .then((result) => {

@@ -18,7 +18,7 @@ export function CurrentMonthStatsCards(): React.ReactElement | null {
 
     const { userId } = JSON.parse(storedUser);
 
-    fetch(`${API_URL}/api/users/${userId}/stats/current-month`)
+    fetch(`${API_URL}/api/statistics/${userId}/stats/current-month`)
       .then((res) => res.json())
       .then(setStats)
       .catch(() => setStats(null));

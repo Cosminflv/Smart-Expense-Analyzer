@@ -39,7 +39,7 @@ export function MonthlyTopCategoriesChart(): React.ReactElement {
     const { userId } = JSON.parse(storedUser);
 
     fetch(
-      `${API_URL}/api/users/${userId}/highlights/monthly-breakdown?year=${year}`
+      `${API_URL}/api/statistics/${userId}/highlights/monthly-breakdown?year=${year}`
     )
       .then((res) => res.json())
       .then((result) => {

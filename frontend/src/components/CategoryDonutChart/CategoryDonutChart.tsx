@@ -42,7 +42,7 @@ export function CategoryDonutChart(): React.ReactElement {
     const endDate = toISO(end);
 
     fetch(
-      `${API_URL}/api/users/${userId}/breakdown?startDate=${startDate}&endDate=${endDate}`
+      `${API_URL}/api/statistics/${userId}/breakdown?startDate=${startDate}&endDate=${endDate}`
     )
       .then((res) => res.json())
       .then((result) => {
