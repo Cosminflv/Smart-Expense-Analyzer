@@ -6,13 +6,14 @@ import { WelcomeCard } from "../../components/welcomeCard/welcomeCard";
 import { MonthlySummary } from "../../components/MonthlySummary/MonthlySummary";
 
 import { ExpensesChart } from "../../components/ExpensesChart/ExpensesChart";
-import { DailyTipCard } from "../../components/DailyTipCard/DailyTipCard";
+import { MiniAssistantChat } from "../../components/MiniAssistantChat/MiniAssistantChat";
 import { EmptyDashboardState } from "../../components/EmptyDashboardState/EmptyDashboardState";
 
 import "./Dashboard.css";
 
 import { GettingStartedCard } from "../../components/GettingStartedCard/GettingStartedCard";
 import { TransactionsList } from "../../components/TransactionsList/TransactionsList";
+import { DashboardHeader } from "../../components/DashboardHeader/DashboardHeader";
 
 const Dashboard = () => {
   const [hasData, setHasData] = useState<boolean | null>(null);
@@ -50,8 +51,9 @@ const Dashboard = () => {
       <div className="user-right">
         {hasData ? (
           <>
+          <DashboardHeader/>
             <ExpensesChart />
-            <DailyTipCard />
+            <MiniAssistantChat />
           </>
         ) : (
           <GettingStartedCard />

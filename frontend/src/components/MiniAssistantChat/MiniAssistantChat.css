@@ -1,0 +1,63 @@
+.mini-chat-container {
+  max-width: 550px;
+  margin: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.mini-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: #181818;
+  margin-bottom: 8px;
+}
+
+.mini-chat-icon {
+  font-size: 1.4rem;
+}
+
+.mini-chat-hint {
+  font-size: 0.9rem;
+  color: #6a6a6a;
+  margin-bottom: 14px;
+}
+
+.mini-chat-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.mini-chat-input-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.9rem;
+}
+
+.mini-chat-input-row button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #181818;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.mini-chat-input-row button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.mini-chat-response {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.5;
+}
