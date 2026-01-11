@@ -137,4 +137,13 @@ public class UserController {
         List<TransactionDTO> history = userProfileService.getTransactionsByPeriod(userId, startDate, endDate);
         return ResponseEntity.ok(history);
     }
+
+    @GetMapping("/{userId}/highlights/yearly-breakdown")
+    public ResponseEntity<List<MonthlyTopCategoryDTO>> getYearlyTopCategories(
+            @PathVariable Long userId,
+            @RequestParam("year") int year) {
+
+        List<MonthlyTopCategoryDTO> report = userProfileService.getYearlyTopCategoriesWithDetails(userId, year);
+        return ResponseEntity.ok(report);
+    }
 }

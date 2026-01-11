@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -294,6 +296,78 @@ public class UserProfileService {
                         .category(t.getCategory())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Returns for each month the most spent on TransactionCategory with attached transactions.
+     */
+    public List<MonthlyTopCategoryDTO> getYearlyTopCategoriesWithDetails(Long userId, int year) {
+        List<MonthlyTopCategoryDTO> yearlyReport = new ArrayList<>();
+
+        // Iterate through all 12 months
+        for (Month month : Month.values()) {
+            YearMonth yearMonth = YearMonth.of(year, month);
+            LocalDate startDate = yearMonth.atDay(1);
+            LocalDate endDate = yearMonth.atEndOfMonth();
+
+            // 1. Fetch all transactions for this specific month
+            List<TransactionEntity> monthTransactions = transactionRepository
+                    .findByUserIdAndTransactionDateBetweenOrderByTransactionDateDesc(userId, startDate, endDate);
+
+            if (monthTransactions.isEmpty()) {
+                continue; // Skip months with no activity
+            }
+
+            // 2. Find the Category with the highest spending
+            Map<TransactionCategory, BigDecimal> categoryTotals = monthTransactions.stream()
+                    .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0) // Only expenses
+                    .filter(t -> t.getCategory() != TransactionCategory.INCOME)
+                    .collect(Collectors.groupingBy(
+                            TransactionEntity::getCategory,
+                            Collectors.reducing(
+                                    BigDecimal.ZERO,
+                                    t -> t.getAmount().abs(),
+                                    BigDecimal::add
+                            )
+                    ));
+
+            // If no expenses found (e.g., only income), skip
+            if (categoryTotals.isEmpty()) continue;
+
+            // Get the "winner" category
+            Map.Entry<TransactionCategory, BigDecimal> maxEntry = categoryTotals.entrySet().stream()
+                    .max(Map.Entry.comparingByValue())
+                    .orElse(null);
+
+            if (maxEntry != null) {
+                TransactionCategory topCategory = maxEntry.getKey();
+                BigDecimal topTotal = maxEntry.getValue();
+
+                // 3. Filter the original list to get only the transactions for this top category
+                List<TransactionDTO> detailedTransactions = monthTransactions.stream()
+                        .filter(t -> t.getCategory() == topCategory)
+                        .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0) // Ensure we don't accidentally grab refunds/income if any
+                        .map(t -> TransactionDTO.builder()
+                                .id(t.getId())
+                                .date(t.getTransactionDate())
+                                .description(t.getDescription())
+                                .amount(t.getAmount())
+                                .category(t.getCategory())
+                                .build())
+                        .collect(Collectors.toList());
+
+                // 4. Build the DTO
+                yearlyReport.add(MonthlyTopCategoryDTO.builder()
+                        .month(month.name())
+                        .category(topCategory.toString())
+                        .totalAmount(topTotal)
+                        .transactions(detailedTransactions)
+                        .build());
+            }
+        }
+
+        return yearlyReport;
     }
 
 }
