@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // Allow access to all auth endpoints
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/chat/**").permitAll()
+                        .requestMatchers("/api/statistics/**").permitAll()
                         .requestMatchers("/api/dashboard/**").permitAll()
                         .anyRequest().authenticated() // All other requests must be authenticated
                 )

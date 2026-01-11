@@ -76,55 +76,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userId}/breakdown")
-    public ResponseEntity<List<CategoryExpenseDTO>> getCategoryBreakdown(
-            @PathVariable Long userId,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-
-        List<CategoryExpenseDTO> stats = userProfileService.getCategoryBreakdown(userId, startDate, endDate);
-        return ResponseEntity.ok(stats);
-    }
-
     @GetMapping("/{userId}/transactions/recent")
     public ResponseEntity<List<Map<String, Object>>> getRecentTransactions(
             @PathVariable Long userId) {
 
         return ResponseEntity.ok(
                 userProfileService.getRecentTransactions(userId)
-        );
-    }
-
-    @GetMapping("/{userId}/trends/balance")
-    public ResponseEntity<List<BalancePointDTO>> getBalanceEvolution(
-            @PathVariable Long userId,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-
-        return ResponseEntity.ok(
-                userProfileService.getBalanceEvolution(userId, startDate, endDate)
-        );
-    }
-
-    @GetMapping("/{userId}/trends/heatmap")
-    public ResponseEntity<List<DailySpendingDTO>> getSpendingHeatmap(
-            @PathVariable Long userId,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-
-        return ResponseEntity.ok(
-                userProfileService.getDailySpendingHeatmap(userId, startDate, endDate)
-        );
-    }
-
-    @GetMapping("/{userId}/trends/weekdays")
-    public ResponseEntity<List<DayOfWeekStatsDTO>> getWeekdayAnalysis(
-            @PathVariable Long userId,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-
-        return ResponseEntity.ok(
-                userProfileService.getPeakSpendingDays(userId, startDate, endDate)
         );
     }
 
@@ -138,19 +95,4 @@ public class UserController {
         return ResponseEntity.ok(history);
     }
 
-    @GetMapping("/{userId}/highlights/monthly-breakdown")
-    public ResponseEntity<List<MonthlyTopCategoryDTO>> getMonthlyTopCategories(
-            @PathVariable Long userId,
-            @RequestParam("year") int year) {
-
-        List<MonthlyTopCategoryDTO> report = userProfileService.getMonthlyTopCategoriesWithDetails(userId, year);
-        return ResponseEntity.ok(report);
-    }
-
-    @GetMapping("/{userId}/stats/current-month")
-    public ResponseEntity<CurrentMonthStatsDTO> getCurrentMonthStats(@PathVariable Long userId) {
-        return ResponseEntity.ok(
-                userProfileService.getCurrentMonthStats(userId)
-        );
-    }
 }
