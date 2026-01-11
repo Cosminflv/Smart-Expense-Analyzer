@@ -1,12 +1,18 @@
 .mini-chat-container {
-  max-width: 550px;
-  margin: 20px;
+  max-width: 650px;        /* 👈 limita maximă (desktop) */
+  width: 100%;             /* 👈 se micșorează pe mobile */
+  margin: 40px auto 0;     /* 👈 centrat */
   padding: 20px;
+
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
 }
+
 
 .mini-chat-header {
   display: flex;
@@ -23,7 +29,7 @@
 
 .mini-chat-hint {
   font-size: 0.9rem;
-  color: #6a6a6a;
+  color: #464545;
   margin-bottom: 14px;
 }
 
@@ -60,4 +66,18 @@
   font-size: 0.9rem;
   color: #333;
   line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .mini-chat-container {
+    padding: 16px;
+  }
+
+  .mini-chat-input-row {
+    flex-direction: column;
+  }
+
+  .mini-chat-input-row button {
+    width: 100%;
+  }
 }
