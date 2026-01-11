@@ -19,7 +19,7 @@ public class DashboardController {
     public Map<String, Object> getDashboardSummary(
             @RequestParam Long userId
     ) {
-        boolean hasData = transactionRepository.existsUserById(userId);
+        boolean hasData = transactionRepository.existsByUserId(userId);
 
         if (!hasData) {
             return Map.of("hasData", false);
