@@ -1,6 +1,9 @@
 package com.example.smartexpenseanalyzerserver.controllers;
 
+import com.example.smartexpenseanalyzerserver.dtos.statistics.BalancePointDTO;
 import com.example.smartexpenseanalyzerserver.dtos.statistics.CategoryExpenseDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.DailySpendingDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.DayOfWeekStatsDTO;
 import com.example.smartexpenseanalyzerserver.services.TransactionImportService;
 import com.example.smartexpenseanalyzerserver.services.UserProfileService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -95,4 +98,36 @@ public class UserController {
         );
     }
 
+    @GetMapping("/{userId}/trends/balance")
+    public ResponseEntity<List<BalancePointDTO>> getBalanceEvolution(
+            @PathVariable Long userId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        return ResponseEntity.ok(
+                userProfileService.getBalanceEvolution(userId, startDate, endDate)
+        );
+    }
+
+    @GetMapping("/{userId}/trends/heatmap")
+    public ResponseEntity<List<DailySpendingDTO>> getSpendingHeatmap(
+            @PathVariable Long userId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        return ResponseEntity.ok(
+                userProfileService.getDailySpendingHeatmap(userId, startDate, endDate)
+        );
+    }
+
+    @GetMapping("/{userId}/trends/weekdays")
+    public ResponseEntity<List<DayOfWeekStatsDTO>> getWeekdayAnalysis(
+            @PathVariable Long userId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        return ResponseEntity.ok(
+                userProfileService.getPeakSpendingDays(userId, startDate, endDate)
+        );
+    }
 }

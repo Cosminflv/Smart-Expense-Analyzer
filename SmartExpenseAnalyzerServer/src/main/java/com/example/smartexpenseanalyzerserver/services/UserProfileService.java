@@ -1,6 +1,9 @@
 package com.example.smartexpenseanalyzerserver.services;
 
+import com.example.smartexpenseanalyzerserver.dtos.statistics.BalancePointDTO;
 import com.example.smartexpenseanalyzerserver.dtos.statistics.CategoryExpenseDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.DailySpendingDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.DayOfWeekStatsDTO;
 import com.example.smartexpenseanalyzerserver.entities.TransactionCategory;
 import com.example.smartexpenseanalyzerserver.entities.TransactionEntity;
 import com.example.smartexpenseanalyzerserver.repositories.TransactionRepository;
@@ -8,11 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -176,6 +177,108 @@ public class UserProfileService {
                         "amount", t.getAmount()
                 ))
                 .toList();
+    }
+
+    /**
+     * 1. Balance Evolution
+     * Returns the balance at the end of every day that had a transaction.
+     */
+    public List<BalancePointDTO> getBalanceEvolution(Long userId, LocalDate startDate, LocalDate endDate) {
+        // Fetch sorted by Date and ID to ensure we process the "last" transaction of the day last.
+        List<TransactionEntity> transactions = transactionRepository
+                .findByUserIdAndTransactionDateBetweenOrderByTransactionDateAscIdAsc(userId, startDate, endDate);
+
+        // Map to hold date -> last_balance.
+        // Using LinkedHashMap to preserve date order naturally from the sorted list.
+        Map<LocalDate, BigDecimal> balanceMap = new LinkedHashMap<>();
+
+        for (TransactionEntity t : transactions) {
+            // Because the list is sorted, putting the value will overwrite previous entries for the same day.
+            // The last entry for a specific date will effectively be the "closing balance" for that day.
+            balanceMap.put(t.getTransactionDate(), t.getCurrentBalance());
+        }
+
+        return balanceMap.entrySet().stream()
+                .map(entry -> BalancePointDTO.builder()
+                        .date(entry.getKey())
+                        .balance(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 2. Daily Spending Heatmap
+     * Sums up expenses (negative amounts) per day.
+     */
+    public List<DailySpendingDTO> getDailySpendingHeatmap(Long userId, LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository
+                .findByUserIdAndTransactionDateBetween(userId, startDate, endDate);
+
+        // Group by Date, Filter Expenses, Sum Absolute Amount
+        Map<LocalDate, BigDecimal> dailyTotals = transactions.stream()
+                .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0) // Expenses only
+                .collect(Collectors.groupingBy(
+                        TransactionEntity::getTransactionDate,
+                        Collectors.reducing(
+                                BigDecimal.ZERO,
+                                t -> t.getAmount().abs(),
+                                BigDecimal::add
+                        )
+                ));
+
+        return dailyTotals.entrySet().stream()
+                .map(entry -> DailySpendingDTO.builder()
+                        .date(entry.getKey())
+                        .totalSpent(entry.getValue())
+                        .build())
+                .sorted(Comparator.comparing(DailySpendingDTO::getDate)) // Sort for the calendar UI
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 3. Peak Spending Days (Day of Week Analysis)
+     * Aggregates spending by MONDAY, TUESDAY, etc.
+     */
+    public List<DayOfWeekStatsDTO> getPeakSpendingDays(Long userId, LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository
+                .findByUserIdAndTransactionDateBetween(userId, startDate, endDate);
+
+        List<TransactionEntity> expenses = transactions.stream()
+                .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0)
+                .toList();
+
+        // Group by DayOfWeek
+        Map<DayOfWeek, List<TransactionEntity>> groupedByDay = expenses.stream()
+                .collect(Collectors.groupingBy(t -> t.getTransactionDate().getDayOfWeek()));
+
+        List<DayOfWeekStatsDTO> stats = new ArrayList<>();
+
+        // Iterate through all 7 days to ensure we return 0 for days with no spending (cleaner for charts)
+        for (DayOfWeek day : DayOfWeek.values()) {
+            List<TransactionEntity> dayTransactions = groupedByDay.getOrDefault(day, new ArrayList<>());
+
+            BigDecimal totalAmount = dayTransactions.stream()
+                    .map(t -> t.getAmount().abs())
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            long count = dayTransactions.size();
+
+            double average = count > 0
+                    ? totalAmount.divide(BigDecimal.valueOf(count), RoundingMode.HALF_UP).doubleValue()
+                    : 0.0;
+
+            stats.add(DayOfWeekStatsDTO.builder()
+                    .dayOfWeek(day.name())
+                    .totalAmount(totalAmount)
+                    .transactionCount(count)
+                    .averageAmount(average)
+                    .build());
+        }
+
+        // Optional: Sort by Total Amount Descending to highlight "Peak" days first
+        stats.sort(Comparator.comparing(DayOfWeekStatsDTO::getTotalAmount).reversed());
+
+        return stats;
     }
 
 }
