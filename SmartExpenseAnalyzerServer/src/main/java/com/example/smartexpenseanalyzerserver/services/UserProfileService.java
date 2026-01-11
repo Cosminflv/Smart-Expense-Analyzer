@@ -1,9 +1,6 @@
 package com.example.smartexpenseanalyzerserver.services;
 
-import com.example.smartexpenseanalyzerserver.dtos.statistics.BalancePointDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.CategoryExpenseDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.DailySpendingDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.DayOfWeekStatsDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.*;
 import com.example.smartexpenseanalyzerserver.entities.TransactionCategory;
 import com.example.smartexpenseanalyzerserver.entities.TransactionEntity;
 import com.example.smartexpenseanalyzerserver.repositories.TransactionRepository;
@@ -279,6 +276,24 @@ public class UserProfileService {
         stats.sort(Comparator.comparing(DayOfWeekStatsDTO::getTotalAmount).reversed());
 
         return stats;
+    }
+
+    /**
+     * Returns full transaction history for a specific period, sorted by newest first.
+     */
+    public List<TransactionDTO> getTransactionsByPeriod(Long userId, LocalDate startDate, LocalDate endDate) {
+        List<TransactionEntity> transactions = transactionRepository
+                .findByUserIdAndTransactionDateBetweenOrderByTransactionDateDesc(userId, startDate, endDate);
+
+        return transactions.stream()
+                .map(t -> TransactionDTO.builder()
+                        .id(t.getId())
+                        .date(t.getTransactionDate())
+                        .description(t.getDescription())
+                        .amount(t.getAmount())
+                        .category(t.getCategory())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }

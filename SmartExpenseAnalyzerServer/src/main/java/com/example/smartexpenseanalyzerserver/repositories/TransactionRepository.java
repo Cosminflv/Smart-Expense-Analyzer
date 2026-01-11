@@ -27,4 +27,10 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             Long userId, LocalDate startDate, LocalDate endDate, java.math.BigDecimal amount
     );
 
+    List<TransactionEntity> findByUserIdAndTransactionDateBetweenOrderByTransactionDateDesc(
+            Long userId,
+            LocalDate startDate,
+            LocalDate endDate
+    );
+
 }

@@ -1,9 +1,6 @@
 package com.example.smartexpenseanalyzerserver.controllers;
 
-import com.example.smartexpenseanalyzerserver.dtos.statistics.BalancePointDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.CategoryExpenseDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.DailySpendingDTO;
-import com.example.smartexpenseanalyzerserver.dtos.statistics.DayOfWeekStatsDTO;
+import com.example.smartexpenseanalyzerserver.dtos.statistics.*;
 import com.example.smartexpenseanalyzerserver.services.TransactionImportService;
 import com.example.smartexpenseanalyzerserver.services.UserProfileService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -129,5 +126,15 @@ public class UserController {
         return ResponseEntity.ok(
                 userProfileService.getPeakSpendingDays(userId, startDate, endDate)
         );
+    }
+
+    @GetMapping("/{userId}/transactions/history")
+    public ResponseEntity<List<TransactionDTO>> getTransactionHistory(
+            @PathVariable Long userId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        List<TransactionDTO> history = userProfileService.getTransactionsByPeriod(userId, startDate, endDate);
+        return ResponseEntity.ok(history);
     }
 }
