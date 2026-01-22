@@ -1,12 +1,12 @@
 package com.example.smartexpenseanalyzerserver.dtos.gemini;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ChatRequest {
     private String message;
 }
