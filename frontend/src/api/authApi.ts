@@ -1,10 +1,5 @@
+import type { AuthResponse } from "../types/auth.types";
 import { API_URL } from "./config";
-
-export type AuthResponse = {
-  message: string;
-  username: string;
-  userId: number;
-};
 
 export async function login(username: string, password: string): Promise<AuthResponse> {
   const response = await fetch(`${API_URL}/api/auth/login`, {
