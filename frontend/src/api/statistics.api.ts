@@ -1,9 +1,6 @@
+import type { BalancePoint } from "../types/balancePoint.types";
+import type { CategoryBreakdownItem } from "../types/categoryBreakdownItem.types";
 import { API_URL } from "./config";
-
-export type BalancePoint = {
-  date: string;
-  balance: number;
-};
 
 export async function getBalanceTrends(
   userId: number,
@@ -24,4 +21,20 @@ export async function getBalanceTrends(
     date: item.date,
     balance: Number(item.balance),
   }));
+}
+
+export async function getCategoryBreakdown(
+  userId: number,
+  startDate: string,
+  endDate: string
+) {
+  const res = await fetch(
+    `${API_URL}/api/statistics/${userId}/breakdown?startDate=${startDate}&endDate=${endDate}`
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to load category breakdown");
+  }
+
+  return res.json() as Promise<CategoryBreakdownItem[]>;
 }

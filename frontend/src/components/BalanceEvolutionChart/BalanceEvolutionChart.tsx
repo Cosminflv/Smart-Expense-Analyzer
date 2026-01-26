@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
-import { Paper, Title, Text } from "@mantine/core";
+import { Paper, Title } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 
-import { getBalanceTrends, type BalancePoint } from "../../api/statistics.api";
-import { getCurrentUser } from "../../utils/authStorage";
+const API_URL = import.meta.env.VITE_API_URL as string;
+
+type BalancePoint = {
+  date: string;
+  balance: number;
+};
 
 export function BalanceEvolutionChart(): React.ReactElement {
   const [data, setData] = useState<BalancePoint[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const user = getCurrentUser();
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+    const storedUser = localStorage.getItem("currentUser");
+    if (!storedUser) return;
 
+    const { userId } = JSON.parse(storedUser);
+
+    // ultimele 3 luni
     const end = new Date();
     const start = new Date();
     start.setMonth(end.getMonth() - 3);
@@ -24,51 +26,45 @@ export function BalanceEvolutionChart(): React.ReactElement {
     const startDate = start.toISOString().slice(0, 10);
     const endDate = end.toISOString().slice(0, 10);
 
-    getBalanceTrends(user.userId, startDate, endDate)
-      .then(setData)
-      .catch(() => setError("Could not load balance evolution"))
-      .finally(() => setLoading(false));
+    fetch(
+      `${API_URL}/api/statistics/${userId}/trends/balance?startDate=${startDate}&endDate=${endDate}`
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        const mapped = result.map((item: any) => ({
+          date: item.date,
+          balance: Number(item.balance),
+        }));
+        setData(mapped);
+      })
+      .catch(() => setData([]));
   }, []);
-
-  if (loading) {
-    return (
-      <Paper withBorder radius="md" p="lg">
-        <Title order={4}>Balance evolution</Title>
-        <Text>Loading...</Text>
-      </Paper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Paper withBorder radius="md" p="lg">
-        <Title order={4}>Balance evolution</Title>
-        <Text color="red">{error}</Text>
-      </Paper>
-    );
-  }
 
   if (data.length === 0) {
     return (
       <Paper withBorder radius="md" p="lg">
         <Title order={4}>Balance evolution</Title>
-        <Text>No data available</Text>
+        <p>No data available</p>
       </Paper>
     );
   }
 
   return (
-    <Paper withBorder radius="md" p={{ base: "sm", sm: "md", md: "lg" }}>
-      <Title order={4} mb="sm">
+    <Paper withBorder radius="md" p="lg">
+      <Title order={3} mb="md">
         Balance evolution
       </Title>
 
       <LineChart
-        h={220}
-        mih={180}
+        h={260}
         data={data}
         dataKey="date"
-        series={[{ name: "balance", color: "dark.6" }]}
+        series={[
+          {
+            name: "balance",
+            color: "dark.6",
+          },
+        ]}
         withDots={false}
         withLegend={false}
         yAxisProps={{
