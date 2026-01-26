@@ -1,28 +1,34 @@
 import { useEffect, useState } from "react";
-import { Paper } from "@mantine/core";
+import { Paper, Text } from "@mantine/core";
 import "./CurrentMonthStatsCards.css";
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
-type CurrentMonthStats = {
-  transactionCount: number;
-  categoryCount: number;
-};
+import { getCurrentMonthStats } from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
 
 export function CurrentMonthStatsCards(): React.ReactElement | null {
-  const [stats, setStats] = useState<CurrentMonthStats | null>(null);
+  const [stats, setStats] = useState<{
+    transactionCount: number;
+    categoryCount: number;
+  } | null>(null);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+    const user = getCurrentUser();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    const { userId } = JSON.parse(storedUser);
-
-    fetch(`${API_URL}/api/statistics/${userId}/stats/current-month`)
-      .then((res) => res.json())
+    getCurrentMonthStats(user.userId)
       .then(setStats)
-      .catch(() => setStats(null));
+      .catch(() => setStats(null))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return null; // sau skeleton dacă vrei
+  }
 
   if (!stats) {
     return null;
@@ -32,12 +38,16 @@ export function CurrentMonthStatsCards(): React.ReactElement | null {
     <div className="current-month-stats">
       <Paper withBorder radius="md" p="md" className="stats-card">
         <div className="stats-number">{stats.transactionCount}</div>
-        <div className="stats-label">Transactions this month</div>
+        <Text size="sm" c="dimmed">
+          Transactions this month
+        </Text>
       </Paper>
 
       <Paper withBorder radius="md" p="md" className="stats-card">
         <div className="stats-number">{stats.categoryCount}</div>
-        <div className="stats-label">Categories used</div>
+        <Text size="sm" c="dimmed">
+          Categories used
+        </Text>
       </Paper>
     </div>
   );

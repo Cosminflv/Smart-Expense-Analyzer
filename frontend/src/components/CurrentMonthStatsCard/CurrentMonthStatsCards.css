@@ -4,19 +4,14 @@
   gap: 16px;
 }
 
+@media (min-width: 768px) {
+  .current-month-stats {
+    flex-direction: row;
+  }
+}
+
 .stats-card {
   text-align: center;
   padding: 20px;
-}
-
-.stats-number {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #181818;
-  margin-bottom: 6px;
-}
-
-.stats-label {
-  font-size: 0.9rem;
-  color: #6a6a6a;
+  flex: 1;
 }
