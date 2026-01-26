@@ -183,3 +183,17 @@
   font-size: 0.95rem;
   color: #333;
 }
+
+@media (max-width: 600px) {
+  .header-stats-row {
+    flex-direction: column;
+  }
+
+  .stat-card {
+    flex-basis: auto;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+}

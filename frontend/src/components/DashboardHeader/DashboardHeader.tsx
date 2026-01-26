@@ -1,35 +1,22 @@
 import { useEffect, useState } from "react";
 import "./DashboardHeader.css";
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
-type CurrentMonthStats = {
-  transactionCount: number;
-  categoryCount: number;
-};
+import { getCurrentMonthStats } from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
 
 export function DashboardHeader(): React.ReactElement {
-  const [stats, setStats] = useState<CurrentMonthStats | null>(null);
+  const [stats, setStats] = useState<{
+    transactionCount: number;
+    categoryCount: number;
+  } | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+    const user = getCurrentUser();
+    if (!user) return;
 
-    const { userId } = JSON.parse(storedUser);
-
-    fetch(`${API_URL}/api/users/${userId}/stats/current-month`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch current month stats");
-        }
-        return res.json();
-      })
-      .then((data: CurrentMonthStats) => {
-        setStats(data);
-      })
-      .catch(() => {
-        setStats(null);
-      });
+    getCurrentMonthStats(user.userId)
+      .then(setStats)
+      .catch(() => setStats(null));
   }, []);
 
   return (
