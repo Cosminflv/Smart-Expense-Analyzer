@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Paper, Title } from "@mantine/core";
+import { Paper, Title, Text } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-const API_URL = import.meta.env.VITE_API_URL as string;
+import { getWeekdayTrends } from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
+import { toISO } from "../../utils/date";
 
 type WeekdayPoint = {
   day: string;
@@ -31,77 +33,66 @@ const LABELS: Record<string, string> = {
 
 export function WeekdaySpendingChart(): React.ReactElement {
   const [data, setData] = useState<WeekdayPoint[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+    const user = getCurrentUser();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    const { userId } = JSON.parse(storedUser);
-
-    // default: ultimele 3 luni
     const end = new Date();
     const start = new Date();
     start.setMonth(end.getMonth() - 3);
 
-    const startDate = start.toISOString().slice(0, 10);
-    const endDate = end.toISOString().slice(0, 10);
+    setLoading(true);
 
-    fetch(
-      `${API_URL}/api/statistics/${userId}/trends/weekdays?startDate=${startDate}&endDate=${endDate}`
-    )
-      .then((res) => res.json())
+    getWeekdayTrends(user.userId, toISO(start), toISO(end))
       .then((result) => {
         const mapped = result
-          .map((item: any) => ({
-            day: item.dayOfWeek,
-            amount: Number(item.totalAmount),
-          }))
-          // ordonăm corect zilele
           .sort(
-            (a: any, b: any) =>
-              ORDER.indexOf(a.day) - ORDER.indexOf(b.day)
+            (a, b) =>
+              ORDER.indexOf(a.dayOfWeek) -
+              ORDER.indexOf(b.dayOfWeek)
           )
-          // label scurt pt UI
-          .map((item: any) => ({
-            day: LABELS[item.day],
-            amount: item.amount,
+          .map((item) => ({
+            day: LABELS[item.dayOfWeek] ?? item.dayOfWeek,
+            amount: Number(item.totalAmount),
           }));
 
         setData(mapped);
       })
-      .catch(() => setData([]));
+      .catch(() => setData([]))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (data.length === 0) {
-    return (
-      <Paper withBorder radius="md" p="lg">
-        <Title order={4}>Spending by weekday</Title>
-        <p>No data available</p>
-      </Paper>
-    );
-  }
-
   return (
-    <Paper withBorder radius="md" p="lg">
-      <Title order={3} mb="md">
+    <Paper withBorder radius="md" p={{ base: "sm", sm: "md", md: "lg" }}>
+      <Title order={4} mb="sm">
         Spending by weekday
       </Title>
 
-      <BarChart
-        h={240}
-        data={data}
-        dataKey="day"
-        series={[
-          {
-            name: "amount",
-            color: "dark.6",
-          },
-        ]}
-        withLegend={false}
-        yAxisProps={{
-          tickFormatter: (v) => `${v} €`,
-        }}
-      />
+      {loading ? (
+        <Text size="sm" c="dimmed">
+          Loading chart...
+        </Text>
+      ) : data.length === 0 ? (
+        <Text size="sm" c="dimmed">
+          No data available
+        </Text>
+      ) : (
+        <BarChart
+          h={220}
+          data={data}
+          dataKey="day"
+          series={[{ name: "amount", color: "dark.6" }]}
+          withLegend={false}
+          yAxisProps={{
+            tickFormatter: (v) => `${v} €`,
+          }}
+        />
+      )}
     </Paper>
   );
 }

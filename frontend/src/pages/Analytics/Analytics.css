@@ -1,0 +1,25 @@
+.user-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Desktop layout */
+@media (min-width: 1024px) {
+  .analytics-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+
+  .user-right {
+    margin-top: 0;
+  }
+}

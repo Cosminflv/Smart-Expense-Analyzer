@@ -1,5 +1,4 @@
-
-import type { Transaction } from "../../pages/Transactions/Transactions";
+import type { Transaction } from "../../types/transactions.type";
 import "./TransactionsInsights.css";
 
 type Props = {

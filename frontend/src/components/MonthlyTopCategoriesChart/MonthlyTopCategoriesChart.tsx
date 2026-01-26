@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { Paper, Title, Select, Group } from "@mantine/core";
+import { Paper, Title, Select, Group, Text } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 import "./MonthlyTopCategoriesChart.css";
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
-type MonthlyTopCategory = {
-  month: string;
-  category: string;
-  totalAmount: number;
-};
+import {
+  getMonthlyTopCategories,
+  type MonthlyTopCategory,
+} from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
 
 const MONTH_LABELS: Record<string, string> = {
   JANUARY: "Jan",
@@ -31,34 +29,31 @@ export function MonthlyTopCategoriesChart(): React.ReactElement {
 
   const [year, setYear] = useState<string>(String(currentYear));
   const [data, setData] = useState<MonthlyTopCategory[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+    const user = getCurrentUser();
+    if (!user) return;
 
-    const { userId } = JSON.parse(storedUser);
+    setLoading(true);
 
-    fetch(
-      `${API_URL}/api/statistics/${userId}/highlights/monthly-breakdown?year=${year}`
-    )
-      .then((res) => res.json())
+    getMonthlyTopCategories(user.userId, year)
       .then((result) => {
-        const mapped = result.map((item: any) => ({
+        const mapped = result.map((item) => ({
+          ...item,
           month: MONTH_LABELS[item.month] ?? item.month,
-          category: item.category,
-          totalAmount: Number(item.totalAmount),
         }));
 
         setData(mapped);
       })
-      .catch(() => setData([]));
+      .catch(() => setData([]))
+      .finally(() => setLoading(false));
   }, [year]);
 
   return (
-    <Paper withBorder radius="md" p="lg">
-      {/* HEADER */}
-      <Group justify="space-between" mb="md">
-        <Title order={3}>Top spending category per month</Title>
+    <Paper withBorder radius="md" p={{ base: "sm", sm: "md", md: "lg" }}>
+      <Group justify="space-between" mb="md" wrap="wrap">
+        <Title order={4}>Top spending category per month</Title>
 
         <Select
           value={year}
@@ -74,20 +69,20 @@ export function MonthlyTopCategoriesChart(): React.ReactElement {
         />
       </Group>
 
-      {/* EMPTY */}
-      {data.length === 0 ? (
-        <p>No data available</p>
+      {loading ? (
+        <Text size="sm" c="dimmed">
+          Loading...
+        </Text>
+      ) : data.length === 0 ? (
+        <Text size="sm" c="dimmed">
+          No data available
+        </Text>
       ) : (
         <BarChart
-          h={260}
+          h={220}
           data={data}
           dataKey="month"
-          series={[
-            {
-              name: "totalAmount",
-              color: "dark.6",
-            },
-          ]}
+          series={[{ name: "totalAmount", color: "dark.6" }]}
           withLegend={false}
           yAxisProps={{
             tickFormatter: (v) => `${v} €`,

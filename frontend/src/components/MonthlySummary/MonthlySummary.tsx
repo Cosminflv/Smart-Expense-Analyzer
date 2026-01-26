@@ -2,43 +2,28 @@ import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import "./MonthlySummary.css";
 
+import { getMonthlySummary } from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
+import { toISO } from "../../utils/date";
+
 type Summary = {
   totalIncome: number;
   totalExpenses: number;
   netSavings: number;
 };
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
 export function MonthlySummary(): React.ReactElement | null {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+    const user = getCurrentUser();
+    if (!user) return;
 
-    const user = JSON.parse(storedUser);
-
-    // Calculate startDate (first day of current month) and endDate (today)
     const today = new Date();
     const startDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
-    // Format dates as YYYY-MM-DD
-    const formatDate = (date: Date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-
-    const startDateStr = formatDate(startDate);
-    const endDateStr = formatDate(today);
-
-    fetch(
-      `${API_URL}/api/users/${user.userId}/profile/summary?startDate=${startDateStr}&endDate=${endDateStr}`
-    )
-      .then((res) => res.json())
+    getMonthlySummary(user.userId, toISO(startDate), toISO(today))
       .then(setSummary)
       .catch(() => setSummary(null));
   }, []);
@@ -82,7 +67,6 @@ export function MonthlySummary(): React.ReactElement | null {
 
   return (
     <div className="monthly-summary-wrapper">
-      {/* CARD */}
       <div className="monthly-summary-card">
         <div className="summary-left">
           <h3>{current.title}</h3>
@@ -98,7 +82,6 @@ export function MonthlySummary(): React.ReactElement | null {
         </div>
       </div>
 
-      {/* SĂGEȚI ÎN AFARĂ */}
       <div className="carousel-arrows">
         <button
           onClick={() =>

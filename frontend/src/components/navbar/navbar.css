@@ -80,3 +80,37 @@ body {
   cursor: not-allowed;
   pointer-events: auto; /* important pentru tooltip */
 }
+@media (max-width: 768px) {
+  .vertical-navbar {
+    flex-direction: row;
+    width: calc(100% - 20px);
+    height: 60px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    top: auto;
+
+    padding: 0 16px;
+    border-radius: 16px;
+  }
+
+  .navbar-top {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .logo {
+    writing-mode: horizontal-tb;
+    letter-spacing: normal;
+    font-size: 1rem;
+  }
+
+  .nav-icons {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .navbar-bottom {
+    display: none;
+  }
+}

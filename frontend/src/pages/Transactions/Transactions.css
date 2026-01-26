@@ -63,3 +63,23 @@
   color: white;
   cursor: pointer;
 }
+@media (max-width: 600px) {
+  .transaction-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .amount {
+    align-self: flex-end;
+  }
+
+  .date-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-filter button {
+    width: 100%;
+  }
+}

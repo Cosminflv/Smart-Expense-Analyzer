@@ -24,3 +24,24 @@
   font-size: 0.9rem;
   margin-bottom: 6px;
 }
+.insights-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px; /* în loc de 178px */
+}
+
+@media (min-width: 900px) {
+  .insights-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+.insight-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}

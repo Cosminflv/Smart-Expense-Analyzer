@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
-import { Paper, Title, Select, Group } from "@mantine/core";
+import { Paper, Title, Select, Group, Text } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
+
+import { getMonthlyExpenseSummary } from "../../api/statistics.api";
+import { getCurrentUser } from "../../utils/authStorage";
 
 type MonthlyPoint = {
   month: string;
   amount: number;
 };
-
-type SummaryResponse = {
-  totalIncome: number;
-  totalExpenses: number;
-  netSavings: number;
-};
-
-const API_URL = import.meta.env.VITE_API_URL as string;
 
 function toISO(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -22,60 +17,53 @@ function toISO(date: Date) {
 export function ExpensesChart(): React.ReactElement {
   const [data, setData] = useState<MonthlyPoint[]>([]);
   const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [loading, setLoading] = useState(true);
 
-  // ani disponibili (poți ajusta ușor)
   const yearOptions = Array.from({ length: 5 }, (_, i) => {
     const y = new Date().getFullYear() - i;
     return { value: String(y), label: String(y) };
   });
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (!storedUser) return;
+ useEffect(() => {
+  const currentUser = getCurrentUser();
+  if (!currentUser) return;
 
-    const { userId } = JSON.parse(storedUser);
+  const userId = currentUser.userId; // 👈 asta rezolvă TS
 
-    async function load() {
-      const months = Array.from({ length: 12 }, (_, i) => i);
+  async function load() {
+    setLoading(true);
 
-      const results = await Promise.all(
-        months.map(async (m) => {
-          const start = new Date(year, m, 1);
-          const end = new Date(year, m + 1, 0);
+    const months = Array.from({ length: 12 }, (_, i) => i);
 
-          const res = await fetch(
-            `${API_URL}/api/users/${userId}/profile/summary?startDate=${toISO(
-              start
-            )}&endDate=${toISO(end)}`
-          );
+    const results = await Promise.all(
+      months.map(async (m) => {
+        const start = new Date(year, m, 1);
+        const end = new Date(year, m + 1, 0);
 
-          if (!res.ok) {
-            return {
-              month: start.toLocaleString("en", { month: "short" }),
-              amount: 0,
-            };
-          }
+        const amount = await getMonthlyExpenseSummary(
+          userId,              // ✅ TS 100% happy
+          toISO(start),
+          toISO(end)
+        );
 
-          const json: SummaryResponse = await res.json();
+        return {
+          month: start.toLocaleString("en", { month: "short" }),
+          amount,
+        };
+      })
+    );
 
-          return {
-            month: start.toLocaleString("en", { month: "short" }),
-            amount: Number(json.totalExpenses || 0),
-          };
-        })
-      );
+    setData(results);
+    setLoading(false);
+  }
 
-      setData(results);
-    }
-
-    load();
-  }, [year]);
+  load();
+}, [year]);
 
   return (
-    <Paper withBorder radius="md" p="lg" className="stats-container">
-      {/* Header */}
-      <Group justify="space-between" mb="md">
-        <Title order={3}>Expenses per month</Title>
+    <Paper withBorder radius="md" p={{ base: "sm", sm: "md", md: "lg" }}>
+      <Group justify="space-between" mb="md" wrap="wrap">
+        <Title order={4}>Expenses per month</Title>
 
         <Select
           data={yearOptions}
@@ -86,22 +74,23 @@ export function ExpensesChart(): React.ReactElement {
         />
       </Group>
 
-      <BarChart
-        h={260}
-        data={data}
-        dataKey="month"
-        series={[
-          {
-            name: "amount",
-            color: "dark.6",
-          },
-        ]}
-        withLegend={false}
-        withTooltip
-        yAxisProps={{
-          tickFormatter: (v) => `${v} €`,
-        }}
-      />
+      {loading ? (
+        <Text size="sm" c="dimmed">
+          Loading chart...
+        </Text>
+      ) : (
+        <BarChart
+          h={220}
+          data={data}
+          dataKey="month"
+          series={[{ name: "amount", color: "dark.6" }]}
+          withLegend={false}
+          withTooltip
+          yAxisProps={{
+            tickFormatter: (v) => `${v} €`,
+          }}
+        />
+      )}
     </Paper>
   );
 }

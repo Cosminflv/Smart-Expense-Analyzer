@@ -1,56 +1,48 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./TransactionsList.css";
 
-interface TransactionItemProps {
-  id: string;
-  iconUrl: string;
-  title: string;
-  category: string;
-  amount: string;
-}
+import { getRecentTransactions } from "../../api/transactions.api";
+import { getCurrentUser } from "../../utils/authStorage";
+import type { Transaction } from "../../types/transactions.type";
 
 function TransactionItem({
-  iconUrl,
-  title,
+  description,
   category,
   amount,
-}: TransactionItemProps): React.ReactElement {
+}: Transaction): React.ReactElement {
   return (
     <div className="course-list-item">
       <div className="course-item-left">
         <div className="course-item-info">
-          <span className="course-item-title">{title}</span>
+          <span className="course-item-title">{description}</span>
           <span className="course-item-author">{category}</span>
         </div>
       </div>
 
       <div className="course-item-right">
-        <span className="meta-text">{amount} €</span>
+        <span className="meta-text">{amount.toFixed(2)} €</span>
       </div>
     </div>
   );
 }
 
 export function TransactionsList(): React.ReactElement {
-  const [transactions, setTransactions] = useState<TransactionItemProps[]>([]);
-
-    const user = JSON.parse(localStorage.getItem("currentUser")!);
-    const userId = user.userId;
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/users/${userId}/transactions/recent`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTransactions(
-          data.map((t: any) => ({
-            id: String(t.id),
-            title: t.title,
-            category: t.category,
-            amount: t.amount.toFixed(2),
-          }))
-        );
-      })
-      .catch(console.error);
+    const user = getCurrentUser();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    getRecentTransactions(user.userId)
+      .then(setTransactions)
+      .catch(() => setTransactions([]))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -61,9 +53,11 @@ export function TransactionsList(): React.ReactElement {
         <button className="filter-button active">All</button>
       </div>
 
+      {loading && <p>Loading...</p>}
+
       <div className="course-list">
-        {transactions.map((transaction) => (
-          <TransactionItem key={transaction.id} {...transaction} />
+        {transactions.map((t) => (
+          <TransactionItem key={t.id} {...t} />
         ))}
       </div>
     </div>

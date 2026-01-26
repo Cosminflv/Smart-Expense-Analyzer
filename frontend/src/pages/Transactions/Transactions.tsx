@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Transactions.css";
 import { TransactionsInsights } from "../../components/TransactionsInsights/TransactionsInsights";
+import type { Transaction } from "../../types/transactions.type";
 
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export type Transaction = {
-  id: number;
-  date: string;
-  description: string;
-  amount: number;
-  category: string;
-};
 
 function toISO(date: Date) {
   return date.toISOString().slice(0, 10);
