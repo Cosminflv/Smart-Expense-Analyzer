@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "./MiniAssistantChat.css";
 import { TfiLightBulb } from "react-icons/tfi";
 
@@ -46,15 +47,17 @@ export function MiniAssistantChat(): React.ReactElement {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Why did I spend more last week?"
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()} // Handy shortcut
         />
         <button onClick={sendMessage} disabled={loading}>
-          {loading ? "Thinking..." : "Ask"}
+          {loading ? "..." : "Ask"}
         </button>
       </div>
 
       {response && (
         <div className="mini-chat-response">
-          {response}
+          {/* The AI response is now rendered as rich HTML */}
+          <ReactMarkdown>{response}</ReactMarkdown>
         </div>
       )}
     </div>
